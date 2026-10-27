@@ -1,0 +1,72 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.3_development
+date: 2026-08-25
+project: RPS-Med
+status: DEVELOPMENT_PROTOCOL_FROZEN_BEFORE_R1_2_RESULT_ACCESS_NOT_FORMAL_R1
+supersedes_candidate: metadata/preregistration/rps_med_r1_v0.2_candidate.yaml
+upstream:
+  nts_med_gate0_v0_9: NO_GO_FROZEN_IMMUTABLE
+  rps_med_r1_1: READY_FOR_DEVELOPMENT_ONLY_CALIBRATION
+authorization:
+  development_calibration_once: PERMITTED
+  formal_r1: NOT_PERMITTED
+  gate0_rerun: FORBIDDEN
+  model_training: FORBIDDEN
+analysis_unit:
+  primary: IMAGE_INSTANCE_PAIR
+  patient_level_claims: FORBIDDEN_WITHOUT_VALIDATED_IDENTIFIERS
+development_confirmation_boundary:
+  partitioned_before_relation_result_access: true
+  maples_dr_messidor1:
+    parent_scope: OFFICIAL_TRAIN_138
+    method: SORT_STABLE_OPAQUE_INSTANCE_ID
+    development_count: 96
+    sealed_confirmation_count: 42
+  ddr:
+    development_scope: LESION_OFFICIAL_TRAIN_383
+    sealed_confirmation_scope: LESION_OFFICIAL_VALID_149
+  old_official_test:
+    role: EXPOSED_PILOT_ONLY
+    rps_access: FORBIDDEN
+relation_semantics:
+  source: nts_med_five_relation_algebra
+  status: INHERITED_UNCHANGED
+reference_thresholds:
+  source: configs/experiment/gate0_dr_v0.6.yaml
+  role: FIXED_REFERENCE_COORDINATE_NOT_GATE0_RESCUE
+  data_feedback_change: FORBIDDEN
+primary_scale_family:
+  policy: MARGIN_ONLY
+  coordinate: LOG2_SCALE
+  minimum_scale: 0.25
+  maximum_scale: 4.0
+  primary_grid_points: 17
+  sensitivity_grid_points: 33
+critical_tolerance:
+  primary: ANALYTIC_MARGIN_PREDICATE_BOUNDARIES
+  sampled_grid: QA_AND_PHASE_SUMMARY
+development_endpoints:
+  source_specific_phase_diagram: REQUIRED
+  source_specific_persistence_mass: REQUIRED
+  analytic_critical_scale_summary: REQUIRED
+  nested_grid_stability: REQUIRED
+  cross_source_normalized_integrated_total_variation: DESCRIPTIVE_REQUIRED
+  source_pooling: FORBIDDEN
+privacy:
+  pair_rows_persisted: false
+  instance_identifiers_in_output: false
+  local_paths_in_output: false
+  raw_images_or_masks_in_git: false
+next_stage:
+  numeric_r1_thresholds: TO_BE_PROPOSED_FROM_DEVELOPMENT_ONLY
+  formal_r1_confirmation_access: REQUIRES_NEW_FREEZE_AND_EXACT_AUTHORIZATION
+material_passport:
+  observation:
+    - The development and future confirmation scopes are fixed before R1.2 relation results.
+  source_supported_semantics:
+    - MAPLES and DDR official split labels define the parent source scopes.
+  inference:
+    - A deterministic opaque-ID partition is a reproducible image-instance boundary for MAPLES train.
+  unresolved:
+    - Patient and eye identifiers are not validated, so future claims remain image-instance level.
+    - Formal R1 numeric decision thresholds remain unfrozen before R1.2.

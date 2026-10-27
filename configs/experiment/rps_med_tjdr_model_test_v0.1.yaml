@@ -1,0 +1,53 @@
+schema_version: 1
+config_id: rps_med_tjdr_model_test_v0.1
+preregistration: metadata/preregistration/rps_med_tjdr_model_test_v0.1.yaml
+development_config: configs/experiment/rps_med_tjdr_model_v0.1.yaml
+status: FROZEN_AWAITING_PASSPORT
+
+selected_model:
+  name: rps_multitask_pair
+  selection_record: metadata/gates/rps_med_tjdr_model_development_result_2026-08-26_v1.yaml
+  seeds: [20260826, 20260827, 20260828]
+  ensemble:
+    spectrum: ARITHMETIC_MEAN_SOFTMAX_PROBABILITIES_THEN_ARGMAX
+    transition: ARITHMETIC_MEAN_SIGMOID_PROBABILITIES
+    critical_log2: ARITHMETIC_MEAN_DESTANDARDIZED_PREDICTIONS
+
+test:
+  dataset: TJDR
+  split: official_test
+  expected_unique_images: 113
+  expected_unordered_pairs: 6328
+  image_size: 768
+  row_predictions_persisted: false
+  image_cache_persisted: false
+
+baseline:
+  name: SCALE_SPECIFIC_TRAIN_MAJORITY
+  derivation: FROZEN_DEVELOPMENT_TRAIN_PARTITION_ONLY
+
+primary:
+  metric: MULTISCALE_MACRO_F1_GAIN_SELECTED_MINUS_MAJORITY
+  bootstrap_unit: UNIQUE_TEST_IMAGE
+  bootstrap_pair_reconstruction: ALL_UNORDERED_PAIRS_OF_BOOTSTRAP_POSITIONS
+  replicates: 5000
+  seed: 20260829
+  interval: PERCENTILE_95_TWO_SIDED
+  success: LOWER_BOUND_STRICTLY_ABOVE_ZERO
+
+secondary:
+  - SELECTED_MULTISCALE_MACRO_F1
+  - RELATION_ACCURACY
+  - PHASE_TOTAL_VARIATION
+  - TRANSITION_ROC_AUC
+  - CRITICAL_LOG2_MAE_TRUE_TRANSITION_PAIRS
+  - PER_SEED_MULTISCALE_MACRO_F1
+
+execution:
+  count: 1
+  authorization_scope: RPS_MED_TJDR_MODEL_TEST_ONCE
+  output_overwrite: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  test_feedback_tuning: FORBIDDEN
+  model_retraining: FORBIDDEN
+  paper_writing: NOT_STARTED

@@ -1,0 +1,70 @@
+schema_version: 1
+config_id: rps_med_tjdr_development_v0.2
+status: DEVELOPMENT_ONLY_NOT_EXTERNAL_GATE
+project: RPS-Med
+inherits: configs/experiment/rps_med_tjdr_development_v0.1.yaml
+amendment:
+  reason: OFFICIAL_RELEASE_CONTAINS_COMPLETE_ALL_BACKGROUND_ANNOTATIONS
+  observed_development_count: 48
+  missing_or_unreadable_annotation_semantics: TECHNICAL_FAILURE_NOT_NEGATIVE
+  complete_all_background_annotation_semantics: ZERO_PIXEL_BURDEN_ALL_FOUR_AXES
+  image_exclusion: FORBIDDEN
+  source_claim_every_image_has_lesion: OBSERVED_RELEASE_CONTRADICTION_RECORDED
+
+source:
+  dataset: TJDR
+  development_split: train
+  expected_development_count: 448
+  sealed_split: test
+  expected_sealed_count: 113
+  train_archive_sha256:
+    - fd3601f73a378286320ec2d98ddd5e185fa5c31a170e8cb78e9a91a9eaa17417
+    - 6009315e5db85b22693268af57e77ff013726f845b6535b01cd74f6e09c7cb18
+  sealed_archive_sha256:
+    - 4f9aa5eaf47609a81422e7ff77a9805d6c28b845fb39806c5a3992e1c9a7760d
+
+annotation:
+  format: SINGLE_CHANNEL_MULTICLASS_PIXEL_MASK
+  allowed_values: [0, 1, 2, 3, 4]
+  require_at_least_one_lesion_class_per_image: false
+  allow_all_background_complete_annotation: true
+  mapping: {ma: 3, hem: 2, ex: 1, cws: 4}
+  cws_source_term: SE_SOFT_EXUDATE
+  missing_file_semantics: TECHNICAL_FAILURE_NOT_NEGATIVE
+  all_background_complete_annotation_semantics: ZERO_PIXEL_BURDEN_ALL_FOUR_AXES
+
+fov_candidate:
+  algorithm_version: TJDR_BLACK_BACKGROUND_DOMINANT_COMPONENT_V1_CANDIDATE
+  inherited_algorithm: DDR_DOMINANT_COMPONENT_V1
+  background_threshold: 5.0
+  minimum_area_ratio: 0.10
+  maximum_area_ratio: 0.98
+  substantial_component_ratio: 0.001
+  dominant_component_min_share: 0.90
+  lesion_or_relation_conditioning: FORBIDDEN
+  development_zero_exclusion_required: true
+
+reference_thresholds:
+  source: configs/experiment/rps_med_r1_v0.5.yaml
+  delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+  epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+  max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+  numeric_tolerance: 1.0e-12
+
+scale:
+  policy: MARGIN_ONLY
+  log2_minimum: -2.0
+  log2_maximum: 2.0
+  primary_step: 0.25
+  sensitivity_step: 0.125
+  primary_points: 17
+  sensitivity_points: 33
+
+guards:
+  sealed_test_scientific_access: FORBIDDEN
+  external_replication_gate: NOT_AUTHORIZED
+  pair_rows_persisted: FORBIDDEN
+  per_instance_rows_persisted: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  gate0_rerun: FORBIDDEN
+  model_training: FORBIDDEN

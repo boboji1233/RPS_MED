@@ -1,0 +1,105 @@
+schema_version: 1
+config_id: rps_med_stage3a_common_v1
+preregistration: metadata/preregistration/rps_med_stage3a_dev_only_v1.yaml
+status: FROZEN_BEFORE_STAGE3A_TRAINING
+project: RPS-Med
+
+data:
+  allowed_cache_basename: rps_med_tjdr_model_cache_2026-08-26_v1.npz
+  allowed_cache_sha256: 25b29c2fb2b10f8eac9a44e20f027c6bf3e521ed7b01fcea6f3f0db8f55a7f10
+  partition_digest: c4ff06ab1cc8a130e43ec7abc1d32f45acec5b0d9008ad998f06c19262385ebe
+  expected_unique_content_units: 442
+  expected_train_units: 354
+  expected_validation_units: 88
+  expected_train_pairs: 62481
+  expected_validation_pairs: 3828
+  pair_construction: WITHIN_PARTITION_UNORDERED_NO_SELF_PAIRS
+  image_size: 768
+
+denylist:
+  forbidden_argument_tokens: [official_test, formal_test, model_test, test_cache, test_embedding, ddr, authorization, passport]
+  forbidden_module_calls: [load_tjdr_test_model_arrays, evaluate_formal_tjdr_model_test, evaluate_ddr_model_transfer]
+  old_output_overwrite: FORBIDDEN
+  source_identifiers_in_output: FORBIDDEN
+
+relation:
+  axes: [ma, hem, ex, cws]
+  states: [LESS, GREATER, EQUIVALENT, STRUCTURAL_INCOMPARABLE, UNRESOLVED]
+  scales: [0.25, 0.29730177875068026, 0.3535533905932738, 0.42044820762685725, 0.5, 0.5946035575013605, 0.7071067811865476, 0.8408964152537145, 1.0, 1.189207115002721, 1.4142135623730951, 1.681792830507429, 2.0, 2.378414230005442, 2.8284271247461903, 3.363585661014858, 4.0]
+  thresholds:
+    delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+    epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+    max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+    numeric_tolerance: 1.0e-12
+
+seeds: [20260826, 20260827, 20260828]
+
+pretraining:
+  architecture: torchvision_resnet18
+  weights: IMAGENET1K_V1
+  sha256: f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec
+
+augmentation:
+  horizontal_flip_probability: 0.5
+  vertical_flip_probability: 0.5
+  rotations_degrees: [0, 90, 180, 270]
+  brightness_range: [0.9, 1.1]
+  contrast_range: [0.9, 1.1]
+  saturation_range: [0.9, 1.1]
+  validation_augmentation: NONE
+
+encoder_training:
+  batch_size: 8
+  max_epochs: 40
+  encoder_lr: 0.0001
+  head_lr: 0.0005
+  weight_decay: 0.0001
+  optimizer: ADAMW
+  scheduler: COSINE_ANNEALING
+  burden_loss: STANDARDIZED_SMOOTH_L1
+  burden_huber_beta: 0.5
+  burden_loss_weight: 1.0
+  presence_loss: BINARY_CROSS_ENTROPY_WITH_LOGITS
+  presence_loss_weight: 0.25
+  early_stopping_by_contract:
+    burden_only: MAX_VALIDATION_MULTISCALE_MACRO_F1_FROM_ANALYTIC_RELATIONS
+    burden_presence: MAX_VALIDATION_MULTISCALE_MACRO_F1_FROM_ANALYTIC_RELATIONS
+    burden_presence_no_geometry: MAX_VALIDATION_MULTISCALE_MACRO_F1_FROM_ANALYTIC_RELATIONS
+    presence_only: MIN_VALIDATION_PRESENCE_BINARY_CROSS_ENTROPY
+  early_stopping_patience: 8
+  early_stopping_min_delta: 0.001
+  amp: true
+
+pair_training:
+  hidden_dimensions: [512, 256]
+  dropout: 0.20
+  batch_size: 1024
+  max_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: ADAMW
+  scheduler: COSINE_ANNEALING
+  spectrum_loss: CLASS_WEIGHTED_CROSS_ENTROPY
+  maximum_class_weight: 5.0
+  transition_loss_weight: 0.25
+  critical_loss_weight: 0.25
+  critical_huber_beta: 0.5
+  soft_admissibility_weight: 0.05
+  early_stopping_metric: VALIDATION_MULTISCALE_MACRO_F1
+  early_stopping_patience: 12
+  early_stopping_min_delta: 0.001
+  amp: true
+
+metrics:
+  primary: SEVENTEEN_SCALE_EQUALLY_WEIGHTED_MEAN_MACRO_F1
+  secondary: [RELATION_ACCURACY, PHASE_TOTAL_VARIATION, PER_STATE_F1, TRANSITION_ROC_AUC, CRITICAL_LOG2_MAE_TRUE_TRANSITION_PAIRS, PAIR_SWAP_CONSISTENCY, INVALID_SPECTRUM_RATE, MULTI_TRANSITION_RATE, PEAK_CUDA_VRAM, WALL_CLOCK_RUNTIME, PARAMETER_COUNT]
+  statistical_unit: VALIDATION_UNIQUE_CONTENT_NODE
+  pair_row_bootstrap: FORBIDDEN
+  per_state_f1: POOLED_OVER_ALL_VALIDATION_PAIR_SCALE_ROWS
+
+runtime:
+  device: cuda
+  deterministic_algorithms: true
+  num_workers: 0
+  automatic_retry: false
+  append_only: true

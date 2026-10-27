@@ -1,0 +1,57 @@
+schema_version: 1
+config_id: rps_med_r1_v0.7
+preregistration: metadata/preregistration/rps_med_r1_v0.7.yaml
+status: FROZEN_AWAITING_EXACT_HASH_AUTHORIZATION
+
+scientific_base_config: configs/experiment/rps_med_r1_v0.5.yaml
+scientific_base_config_sha256: e602f6c2a5fbab96ee1107631767fd53af72a39b2e0c7ac8e9c57e7b82f5b0b0
+diagnostics_base_config: configs/experiment/rps_med_r1_v0.6.yaml
+diagnostics_base_config_sha256: 24b04d23cf406eb5d616f0d2238ec99b5fa92c9e26d6ec8c48552e69ab975ede
+prior_formal_result: metadata/gates/rps_med_r1_v06_formal_result_2026-08-25_v1.yaml
+prior_formal_result_sha256: dc31626d9e3b0028e171c7336ceef5a6a0b2c37fb6e128fea657a569b7b55aea
+
+measurement_amendment:
+  algorithm_version: DDR_DOMINANT_COMPONENT_V1
+  behavior_change_limited_to: LEGACY_MULTIPLE_COMPONENTS
+  background_threshold: 5.0
+  minimum_area_ratio: 0.10
+  maximum_area_ratio: 0.98
+  substantial_component_ratio: 0.001
+  dominant_component_min_share: 0.90
+  dominance_denominator: ALL_SUBSTANTIAL_FOREGROUND_PIXELS
+  unique_largest_required: true
+  disconnected_component_union: FORBIDDEN
+  rectangular_image_denominator: FORBIDDEN
+  lesion_mask_or_grade_conditioning: FORBIDDEN
+  ambiguous_multiple_components: TECHNICAL_ABORT
+  zero_exclusion_contract: REQUIRED
+
+development_validation:
+  scope: DDR_LESION_OFFICIAL_TRAIN
+  expected_input_count: 383
+  image_decode_exclusion_count_required: 0
+  legacy_valid_mask_difference_count_required: 0
+  lesion_masks_opened: false
+  relations_computed: false
+  aggregate_output_only: true
+
+scientific_changes:
+  fov_measurement_algorithm: true
+  source_or_boundary: false
+  lesion_axis_semantics: false
+  burden_formula_except_fov_mask: false
+  relation_algebra: false
+  reference_thresholds: false
+  tolerance_scale_grid: false
+  bootstrap: false
+  decision_thresholds: false
+
+execution:
+  formal_r1: NOT_AUTHORIZED
+  model_training: FORBIDDEN
+  gate0_rerun: FORBIDDEN
+  prior_authorization_reuse: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  automatic_fix: FORBIDDEN
+  automatic_retry: FORBIDDEN

@@ -1,0 +1,60 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.6
+date: 2026-08-25
+project: RPS-Med
+status: TECHNICAL_DIAGNOSTIC_AMENDMENT_AWAITING_FREEZE
+amendment_type: TECHNICAL_DIAGNOSTIC_ONLY
+inherits_scientific_protocol:
+  preregistration: metadata/preregistration/rps_med_r1_v0.5.yaml
+  preregistration_sha256: 38ae9dae9f298b7c8196af2355c97b1f555099060b336e13692f53336b4478b7
+  experiment_config: configs/experiment/rps_med_r1_v0.5.yaml
+  experiment_config_sha256: e602f6c2a5fbab96ee1107631767fd53af72a39b2e0c7ac8e9c57e7b82f5b0b0
+  scientific_changes: false
+prior_formal_result:
+  record: metadata/gates/rps_med_r1_v05_formal_result_2026-08-25_v1.yaml
+  record_sha256: 1f6c42841df18bea04a54145f56692e0cab9aedc96cb67208ddaf5245fb4a2fc
+  status: FORMAL_RPS_MED_R1_ABORTED_TECHNICAL
+  reason_code: TECHNICAL_ERROR:BOOTSTRAP_ADJUDICATION:VALUE_ERROR
+  authorization_consumed: true
+  immutable: true
+diagnostic_contract:
+  ddr_substages:
+    - DDR_SAMPLE_SCOPE
+    - DDR_IMAGE_DECODE
+    - DDR_FOV_EXTRACTION
+    - DDR_FOV_VALIDATION
+    - DDR_MASK_DECODE
+    - DDR_BURDEN_MEASUREMENT
+    - DDR_RECORD_CONSTRUCTION
+    - DDR_SOURCE_SUMMARY
+  exclusion_reason_codes:
+    - DDR_IMAGE_DECODE_ERROR
+    - DDR_FOV_EXTRACTION_ERROR
+    - DDR_FOV_EMPTY
+    - DDR_FOV_MULTIPLE_COMPONENTS
+    - DDR_FOV_AREA_RATIO_OUT_OF_RANGE
+    - DDR_FOV_OTHER_INVALID
+    - DDR_FOV_RATIO_NONFINITE
+    - DDR_MASK_DECODE_ERROR
+    - DDR_BURDEN_MEASUREMENT_ERROR
+    - DDR_RECORD_CONSTRUCTION_ERROR
+  any_measurement_exclusion: TECHNICAL_ABORT
+  accepted_eligible_count: 149
+  implicit_case_deletion: FORBIDDEN
+  denominator_change: FORBIDDEN
+privacy:
+  aggregate_reason_counts_only: true
+  exception_messages_in_output: false
+  traceback_in_output: false
+  paths_in_output: false
+  instance_identifiers_in_output: false
+  row_level_measurements_in_output: false
+execution:
+  formal_r1: NOT_AUTHORIZED
+  authorization_scope: FORMAL_R1_ONCE
+  prior_authorization_reuse: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  gate0_rerun: FORBIDDEN
+  training: FORBIDDEN

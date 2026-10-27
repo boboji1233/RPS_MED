@@ -1,0 +1,42 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.4_candidate
+date: 2026-08-25
+project: RPS-Med
+status: POST_DEVELOPMENT_FORMAL_R1_CANDIDATE_NOT_FROZEN_NOT_AUTHORIZED
+development_evidence: metadata/evidence/rps_med_r1_2_development_calibration_2026-08-25_v1.yaml
+confirmation_scopes:
+  maples_dr_messidor1: OPAQUE_ID_SEALED_42_FROM_OFFICIAL_TRAIN
+  ddr: LESION_OFFICIAL_VALID_149
+  old_official_test: FORBIDDEN_EXPOSED_PILOT
+analysis_unit: IMAGE_INSTANCE_PAIR
+relation_semantics: INHERITED_UNCHANGED
+scale_family:
+  policy: MARGIN_ONLY
+  coordinate: LOG2_SCALE
+  range: [0.25, 4.0]
+  primary_points: 17
+  sensitivity_points: 33
+uncertainty_candidate:
+  resampling_unit: IMAGE_INSTANCE
+  unordered_pairs_rebuilt_each_replicate: true
+  pair_row_resampling: false
+  replicates: 5000
+  confidence_level: 0.95
+  interval_method: PERCENTILE_LINEAR_CANDIDATE
+  simultaneous_endpoint_control: NOT_YET_FROZEN
+core_criteria_candidate:
+  all_required: true
+  per_source_transition_fraction_lower_strictly_above: 0.25
+  per_source_structural_incomparability_mass_lower_strictly_above: 0.05
+  cross_source_integrated_agreement_lower_strictly_above: 0.90
+  maximum_coarse_fine_persistence_mass_gap_at_most: 0.01
+  median_critical_scale_log2_gap_upper_at_most: 0.5
+decision_candidate:
+  technical_abort_precedence: true
+  any_core_failure: NO_GO
+  all_core_pass: GO
+  automatic_training: FORBIDDEN
+authorization:
+  formal_r1: NOT_GRANTED
+  confirmation_scientific_access: FORBIDDEN_UNTIL_NEW_FREEZE
+  model_training: FORBIDDEN

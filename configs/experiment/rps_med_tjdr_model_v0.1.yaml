@@ -1,0 +1,144 @@
+schema_version: 1
+config_id: rps_med_tjdr_model_v0.1
+preregistration: metadata/preregistration/rps_med_tjdr_model_v0.1.yaml
+status: FROZEN_DEVELOPMENT_PROTOCOL
+project: RPS-Med
+
+data:
+  dataset: TJDR
+  source_split: official_train
+  input_count: 448
+  cross_test_exact_exclusion_count: 2
+  unique_content_modeling_unit: true
+  expected_unique_development_count: 442
+  exact_duplicate_annotation_target_aggregation: ARITHMETIC_MEAN_TRANSFORMED_BURDEN
+  validation_fraction: 0.20
+  split_seed: 20260826
+  split_method: DETERMINISTIC_GREEDY_MULTILABEL_AND_RESOLUTION_BALANCING
+  image_size: 768
+  resize: SQUARE_LANCZOS
+  patient_eye_independence_claim: FORBIDDEN_IDENTIFIER_NOT_AVAILABLE
+
+pretraining:
+  architecture: torchvision_resnet18
+  weights: IMAGENET1K_V1
+  official_url: https://download.pytorch.org/models/resnet18-f37072fd.pth
+  sha256: f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec
+  downstream_test_exposure_audit: REQUIRED_BEFORE_FORMAL_TEST
+
+relation:
+  axes: [ma, hem, ex, cws]
+  scale_policy: MARGIN_ONLY
+  scales:
+    - 0.25
+    - 0.29730177875068026
+    - 0.3535533905932738
+    - 0.42044820762685725
+    - 0.5
+    - 0.5946035575013605
+    - 0.7071067811865476
+    - 0.8408964152537145
+    - 1.0
+    - 1.189207115002721
+    - 1.4142135623730951
+    - 1.681792830507429
+    - 2.0
+    - 2.378414230005442
+    - 2.8284271247461903
+    - 3.363585661014858
+    - 4.0
+  thresholds:
+    delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+    epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+    max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+    numeric_tolerance: 1.0e-12
+
+seeds: [20260826, 20260827, 20260828]
+
+augmentation:
+  horizontal_flip_probability: 0.5
+  vertical_flip_probability: 0.5
+  rotations_degrees: [0, 90, 180, 270]
+  brightness_range: [0.9, 1.1]
+  contrast_range: [0.9, 1.1]
+  saturation_range: [0.9, 1.1]
+  validation_augmentation: NONE
+
+burden_model:
+  architecture: RESNET18_SHARED_ENCODER_TWO_HEADS
+  targets: [FOUR_AXIS_TRANSFORMED_BURDEN, FOUR_AXIS_ANNOTATOR_PRESENCE_FRACTION]
+  batch_size: 8
+  max_epochs: 40
+  encoder_lr: 0.0001
+  head_lr: 0.0005
+  weight_decay: 0.0001
+  optimizer: ADAMW
+  scheduler: COSINE_ANNEALING
+  burden_loss: STANDARDIZED_SMOOTH_L1
+  huber_beta: 0.5
+  presence_loss: BINARY_CROSS_ENTROPY_WITH_LOGITS
+  presence_loss_weight: 0.25
+  early_stopping_metric: VALIDATION_MULTISCALE_MACRO_F1_FROM_ANALYTIC_RELATIONS
+  early_stopping_patience: 8
+  early_stopping_min_delta: 0.001
+  amp: true
+
+pair_model:
+  inputs: [SIGNED_EMBEDDING_DIFFERENCE, ABSOLUTE_DIFFERENCE, HADAMARD_PRODUCT]
+  hidden_dimensions: [512, 256]
+  dropout: 0.20
+  outputs: [SEVENTEEN_SCALE_RELATION_LOGITS, TRANSITION_LOGIT, CRITICAL_LOG2_SCALE]
+  batch_size: 1024
+  max_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: ADAMW
+  scheduler: COSINE_ANNEALING
+  spectrum_loss: CLASS_WEIGHTED_CROSS_ENTROPY
+  class_weight: INVERSE_SQUARE_ROOT_GLOBAL_TRAIN_FREQUENCY
+  maximum_class_weight: 5.0
+  transition_loss: BINARY_CROSS_ENTROPY_WITH_LOGITS
+  transition_loss_weight: 0.25
+  critical_loss: STANDARDIZED_SMOOTH_L1_TRUE_TRANSITION_PAIRS_ONLY
+  critical_huber_beta: 0.5
+  critical_loss_weight: 0.25
+  early_stopping_metric: VALIDATION_MULTISCALE_MACRO_F1
+  early_stopping_patience: 12
+  early_stopping_min_delta: 0.001
+  amp: true
+
+candidates:
+  frequency_prior: TRAIN_SCALE_SPECIFIC_MAJORITY_NONIMAGE_BASELINE
+  image_burden_analytic: FINETUNED_IMAGE_TO_BURDEN_THEN_FROZEN_RELATION_ALGEBRA
+  frozen_imagenet_pair: FROZEN_IMAGENET_ENCODER_DIRECT_MULTITASK_PAIR_HEAD
+  rps_multitask_pair: BURDEN_SUPERVISED_ENCODER_DIRECT_MULTITASK_PAIR_HEAD
+
+development_gate:
+  selection: HIGHEST_MEAN_VALIDATION_MULTISCALE_MACRO_F1_ACROSS_THREE_SEEDS
+  minimum_macro_f1_margin_over_majority: 0.05
+  every_seed_must_meet_margin: true
+  pass_required_before_test_freeze: true
+
+runtime:
+  device: cuda
+  deterministic_algorithms: true
+  num_workers: 0
+  python: 3.11.14
+  torch: 2.7.0+cu126
+  torchvision: 0.22.0+cu126
+  cuda_runtime: "12.6"
+
+test_policy:
+  official_test_model_access: FORBIDDEN_DURING_DEVELOPMENT
+  model_selection_from_test: FORBIDDEN
+  test_evaluation_count: 1
+  separate_freeze_required: true
+  test_result_feedback_tuning: FORBIDDEN
+  automatic_retry: FORBIDDEN_AFTER_SCIENTIFIC_ACCESS
+
+privacy:
+  cache_git_ignored: true
+  weights_git_ignored: true
+  source_identifiers_in_output: false
+  paths_in_output: false
+  predictions_in_tracked_output: AGGREGATE_ONLY

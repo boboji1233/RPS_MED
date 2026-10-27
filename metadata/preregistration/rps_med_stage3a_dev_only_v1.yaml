@@ -1,0 +1,98 @@
+schema_version: 1
+preregistration_id: rps_med_stage3a_dev_only_v1
+date: 2026-08-26
+project: RPS-Med
+status: FROZEN_BEFORE_STAGE3A_TRAINING
+evidence_level: DEVELOPMENT_ONLY_SUPPORTIVE_EVIDENCE
+
+question: >-
+  On the frozen TJDR official-train development boundary, do matched-budget
+  spectrum baselines and preregistered component ablations support the full
+  relation-persistence learning contract without accessing consumed formal-test
+  or DDR evidence?
+
+immutable_prior_decisions:
+  nts_med_gate0_v0_9: NO_GO
+  rps_med_r1_v0_7: NO_GO
+  tjdr_analytic_train_official_test_gate: GO
+  tjdr_model_development_v0_1: PASS
+  tjdr_one_shot_formal_model_test_v0_1: PASS
+  tjdr_to_ddr_transfer: TRANSFER_PASS_WITH_INTERVAL_NOT_INFERENTIALLY_USABLE
+
+data_boundary:
+  source: TJDR_OFFICIAL_TRAIN_DEVELOPMENT_CACHE_ONLY
+  cache_sha256: 25b29c2fb2b10f8eac9a44e20f027c6bf3e521ed7b01fcea6f3f0db8f55a7f10
+  partition_digest: c4ff06ab1cc8a130e43ec7abc1d32f45acec5b0d9008ad998f06c19262385ebe
+  unique_content_units: 442
+  train_units: 354
+  validation_units: 88
+  train_pairs: 62481
+  validation_pairs: 3828
+  pair_construction: WITHIN_PARTITION_UNORDERED_NO_SELF_PAIRS
+  split_change: FORBIDDEN
+  official_test_access: FORBIDDEN
+  ddr_access: FORBIDDEN
+  patient_eye_independence_claim: FORBIDDEN_IDENTIFIERS_UNAVAILABLE
+
+immutable_relation:
+  axes: [ma, hem, ex, cws]
+  states: [LESS, GREATER, EQUIVALENT, STRUCTURAL_INCOMPARABLE, UNRESOLVED]
+  scale_policy: MARGIN_ONLY
+  scales: [0.25, 0.29730177875068026, 0.3535533905932738, 0.42044820762685725, 0.5, 0.5946035575013605, 0.7071067811865476, 0.8408964152537145, 1.0, 1.189207115002721, 1.4142135623730951, 1.681792830507429, 2.0, 2.378414230005442, 2.8284271247461903, 3.363585661014858, 4.0]
+  threshold_source: configs/experiment/rps_med_tjdr_model_v0.1.yaml
+  threshold_change: FORBIDDEN
+  unresolved_transitive_inference: FORBIDDEN
+
+seeds: [20260826, 20260827, 20260828]
+
+budgets:
+  inherited_from: configs/experiment/rps_med_tjdr_model_v0.1.yaml
+  image_size: 768
+  encoder_max_epochs: 40
+  encoder_batch_size: 8
+  pair_max_epochs: 100
+  pair_batch_size: 1024
+  early_stopping_change_after_results: FORBIDDEN
+  result_driven_tuning: FORBIDDEN
+
+primary_metric:
+  name: SEVENTEEN_SCALE_EQUALLY_WEIGHTED_MEAN_MACRO_F1
+  supported_truth_classes_only: true
+
+secondary_metrics:
+  - RELATION_ACCURACY
+  - PHASE_TOTAL_VARIATION
+  - PER_STATE_F1
+  - TRANSITION_ROC_AUC
+  - CRITICAL_LOG2_MAE_TRUE_TRANSITION_PAIRS
+  - PAIR_SWAP_CONSISTENCY
+  - INVALID_SPECTRUM_RATE
+  - MULTI_TRANSITION_RATE
+  - PEAK_CUDA_VRAM
+  - WALL_CLOCK_RUNTIME
+  - PARAMETER_COUNT
+
+statistics:
+  independent_unit: VALIDATION_UNIQUE_CONTENT_NODE
+  pair_row_bootstrap: FORBIDDEN
+  method: PAIRED_NODE_DELETE_ONE_JACKKNIFE
+  seed_summary: ARITHMETIC_MEAN_AND_SAMPLE_SD
+  confidence_interval: OBSERVED_EFFECT_PLUS_MINUS_1_96_JACKKNIFE_SE
+  multiplicity: HOLM_WITHIN_PREDECLARED_FAMILY
+  full_reference: B6_A0
+
+execution:
+  scientific_run_authorized_by_current_user_request: true
+  outputs: APPEND_ONLY_GIT_IGNORED
+  selective_seed_retry: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  engineering_amendment_must_be_versioned: true
+  old_output_overwrite: FORBIDDEN
+  remote_push: FORBIDDEN
+
+interpretation:
+  allowed_label: DEVELOPMENT_ONLY_SUPPORTIVE_EVIDENCE
+  formal_test_component_proof: FORBIDDEN
+  external_validation_claim: FORBIDDEN
+  clinical_or_patient_claim: FORBIDDEN
+  new_test_needed: NEW_INDEPENDENT_PROTOCOL_REQUIRED

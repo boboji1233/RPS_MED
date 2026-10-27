@@ -1,0 +1,86 @@
+schema_version: 1
+config_id: rps_med_tjdr_external_gate_v0.1
+preregistration: metadata/preregistration/rps_med_tjdr_external_gate_v0.1.yaml
+status: FROZEN_AWAITING_PASSPORT_AND_STANDING_AUTHORIZATION
+project: RPS-Med
+
+source:
+  dataset: TJDR
+  development_split: train
+  expected_development_count: 448
+  test_split: test
+  expected_test_count: 113
+  train_archive_sha256:
+    - fd3601f73a378286320ec2d98ddd5e185fa5c31a170e8cb78e9a91a9eaa17417
+    - 6009315e5db85b22693268af57e77ff013726f845b6535b01cd74f6e09c7cb18
+  test_archive_sha256:
+    - 4f9aa5eaf47609a81422e7ff77a9805d6c28b845fb39806c5a3992e1c9a7760d
+  development_reference_sha256: f1e51db0bfb7027a1d56d3a695e250f7dca7651989e77ae4dc6953235e5e57af
+
+annotation:
+  format: SINGLE_CHANNEL_MULTICLASS_PIXEL_MASK
+  allowed_values: [0, 1, 2, 3, 4]
+  allow_all_background_complete_annotation: true
+  mapping: {ma: 3, hem: 2, ex: 1, cws: 4}
+  cws_source_term: SE_SOFT_EXUDATE
+  missing_or_unreadable_file: TECHNICAL_ABORT_NOT_NEGATIVE
+
+fov:
+  algorithm_version: TJDR_BLACK_BACKGROUND_DOMINANT_COMPONENT_V1
+  implementation_version: TJDR_BLACK_BACKGROUND_DOMINANT_COMPONENT_V1_CANDIDATE
+  background_threshold: 5.0
+  minimum_area_ratio: 0.10
+  maximum_area_ratio: 0.98
+  substantial_component_ratio: 0.001
+  dominant_component_min_share: 0.90
+  lesion_or_relation_conditioning: FORBIDDEN
+  zero_exclusion_required: true
+
+reference_thresholds:
+  source: configs/experiment/rps_med_r1_v0.5.yaml
+  delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+  epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+  max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+  numeric_tolerance: 1.0e-12
+
+scale:
+  policy: MARGIN_ONLY
+  log2_minimum: -2.0
+  log2_maximum: 2.0
+  primary_step: 0.25
+  sensitivity_step: 0.125
+  primary_points: 17
+  sensitivity_points: 33
+
+bootstrap:
+  method: INDEPENDENT_IMAGE_INSTANCE_RESAMPLING_REBUILD_UNORDERED_PAIRS
+  pair_row_resampling: false
+  replicates: 5000
+  seed: 20260826
+  familywise_alpha: 0.05
+  stochastic_core_endpoint_count: 4
+  lower_quantile: 0.0125
+  upper_quantile: 0.9875
+  quantile_method: LINEAR
+
+criteria:
+  threshold_source: configs/experiment/rps_med_r1_v0.5.yaml
+  thresholds_lowered_from_prior_r1: false
+  transition_fraction_lower_strictly_above: 0.25
+  structural_incomparability_mass_lower_strictly_above: 0.05
+  integrated_agreement_lower_strictly_above: 0.90
+  median_critical_scale_log2_gap_upper_at_most: 0.5
+  maximum_17_33_mass_gap_at_most: 0.01
+  all_required: true
+
+execution:
+  external_replication_gate: NOT_AUTHORIZED
+  formal_execution_count: 1
+  output_overwrite: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  prior_authorization_reuse: FORBIDDEN
+  pair_rows_persisted: false
+  bootstrap_rows_persisted: false
+  gate0: NOT_RERUN
+  model_training: FORBIDDEN

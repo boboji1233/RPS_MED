@@ -1,0 +1,63 @@
+schema_version: 1
+config_id: rps_med_tjdr_dev_baseline_ablation_v0.1
+status: FROZEN_PROTOCOL_ONLY_NO_EXECUTION_AUTHORIZED
+project: RPS-Med
+
+data:
+  dataset: TJDR
+  allowed_split: official_train
+  official_test_access: FORBIDDEN
+  expected_unique_content_images: 442
+  fold_count: 5
+  fold_unit: UNIQUE_CONTENT_IMAGE
+  fold_seed: 20260830
+  pair_construction: WITHIN_PARTITION_UNORDERED_NO_SELF_PAIRS
+
+relation:
+  inherited_from: configs/experiment/rps_med_tjdr_model_v0.1.yaml
+  semantics_change: FORBIDDEN
+  axes: [ma, hem, ex, cws]
+  states: [LESS, GREATER, EQUIVALENT, STRUCTURAL_INCOMPARABLE, UNRESOLVED]
+  scales: [0.25, 0.29730177875068026, 0.3535533905932738, 0.42044820762685725, 0.5, 0.5946035575013605, 0.7071067811865476, 0.8408964152537145, 1.0, 1.189207115002721, 1.4142135623730951, 1.681792830507429, 2.0, 2.378414230005442, 2.8284271247461903, 3.363585661014858, 4.0]
+
+seeds: [20260826, 20260827, 20260828]
+
+baselines:
+  - {id: scale_specific_majority, role: exact}
+  - {id: image_burden_analytic, role: exact}
+  - {id: frozen_imagenet_pair, role: exact}
+  - {id: rps_multitask_pair, role: exact}
+  - {id: direct_five_state_pair, role: adapted}
+  - {id: lambda_conditioned_pair, role: adapted}
+  - {id: ranknet_scalar, role: adapted}
+  - {id: conpro_severity, role: adapted}
+  - {id: schmidt_ordinal_state, role: adapted}
+
+ablations:
+  - spectrum_only
+  - spectrum_plus_burden_presence
+  - spectrum_plus_transition
+  - spectrum_plus_critical
+  - full_multitask
+  - independent_scale_heads
+  - shared_scale_conditioned_head
+  - no_scale_condition
+  - merge_si_unresolved_diagnostic_only
+  - frozen_encoder
+  - finetuned_encoder
+
+metrics:
+  primary: MULTISCALE_MACRO_F1
+  secondary: [PHASE_TOTAL_VARIATION, TRANSITION_AUC, CRITICAL_LOG2_MAE, RELATION_ACCURACY, PER_STATE_F1]
+  aggregation: REPORT_ALL_FOLDS_AND_SEEDS
+
+uncertainty:
+  resampling_unit: UNIQUE_CONTENT_IMAGE
+  pair_row_bootstrap: FORBIDDEN
+  reconstruct_pair_weights: true
+
+execution:
+  scientific_run_authorized: false
+  official_test_feedback: FORBIDDEN
+  result_driven_tuning: FORBIDDEN
+  model_training: FORBIDDEN_UNTIL_SEPARATE_AUTHORIZATION

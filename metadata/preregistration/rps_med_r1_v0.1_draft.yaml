@@ -1,0 +1,78 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.1_draft
+date: 2026-08-25
+project: RPS-Med
+title: Relation-Persistence Spectrum Learning for Medical Images
+status: DRAFT_NOT_FROZEN_NOT_EXECUTABLE
+authorization:
+  r1_run_permitted: false
+  real_pair_generation_permitted: false
+  model_training: FORBIDDEN
+upstream_boundary:
+  nts_med_gate0_v0_9: NO_GO_FROZEN_IMMUTABLE
+  nts_med_result_role: PILOT_MOTIVATION_ONLY
+  prior_held_out_status: EXPOSED_NOT_NEW_CONFIRMATORY
+research_question: >-
+  How do expert-annotation-derived image-instance relations change over a prespecified tolerance
+  scale, where do relation transitions occur, and how stable are the resulting source-specific
+  phase diagrams across independent sources?
+analysis_unit:
+  primary: IMAGE_INSTANCE_PAIR
+  patient_level_claims: FORBIDDEN_WITHOUT_VALIDATED_IDENTIFIERS
+relation_semantics:
+  source: nts_med_five_relation_algebra
+  status: INHERITED_UNCHANGED
+  structural_incomparable: HIGH_CONFIDENCE_OPPOSING_AXIS_CROSSING
+  unresolved: EPISTEMIC_EVIDENCE_STATE_NO_TRANSITIVE_INFERENCE
+tolerance_parameterisation:
+  status: NOT_FROZEN
+  implementation_contract: EXPLICIT_COMPLETE_RELATION_CONFIG_AT_EACH_SCALE
+  scale_range: NOT_FROZEN
+  scale_grid: NOT_FROZEN
+  scaled_components: NOT_FROZEN
+  post_hoc_scale_selection: FORBIDDEN
+model_free_outputs:
+  pair_relation_persistence_spectrum: IMPLEMENTED_SYNTHETIC_ONLY
+  critical_tolerance: SAMPLED_TRANSITION_BRACKET_IMPLEMENTED
+  analytical_critical_tolerance: NOT_FROZEN
+  source_relation_phase_diagram: IMPLEMENTED_SYNTHETIC_ONLY
+  cross_source_stability:
+    descriptive_total_variation: IMPLEMENTED_NON_DECISION_BEARING
+    descriptive_agreement_one_minus_tv: IMPLEMENTED_NON_DECISION_BEARING
+    primary_metric: NOT_FROZEN
+data_roles:
+  existing_official_noncommercial_research_data: ELIGIBLE_FOR_ROLE_ASSIGNMENT
+  role_assignment: NOT_FROZEN
+  development_only_method_selection: REQUIRED
+  new_confirmatory_boundary: NOT_FROZEN
+  sources_must_remain_separate: true
+r1_required_freezes:
+  - TOLERANCE_PARAMETERISATION
+  - SCALE_RANGE_AND_GRID
+  - CRITICAL_TOLERANCE_DEFINITION
+  - PHASE_DIAGRAM_PRIMARY_ENDPOINTS
+  - CROSS_SOURCE_STABILITY_PRIMARY_METRIC
+  - UNCERTAINTY_AND_RESAMPLING_UNIT
+  - DEVELOPMENT_CALIBRATION_CONFIRMATORY_BOUNDARIES
+  - R1_DECISION_THRESHOLDS_AND_PRECEDENCE
+  - SYNTHETIC_VALIDATION_ACCEPTANCE
+r1_criteria_status:
+  spectrum_identifiability: NOT_EVALUATED
+  critical_scale_reproducibility: NOT_EVALUATED
+  phase_structure_nontriviality: NOT_EVALUATED
+  cross_source_stability: NOT_EVALUATED
+  grid_sensitivity: NOT_EVALUATED
+  technical_integrity: NOT_EVALUATED
+decision:
+  r1: NOT_RUN
+  training: FORBIDDEN
+  automatic_progression_to_training: FORBIDDEN
+material_passport:
+  observation:
+    - Only synthetic unit tests support the current spectrum implementation.
+  source_supported_semantics:
+    - The five relation labels retain their prior audited definitions.
+  inference:
+    - Explicit scale configurations prevent an unfrozen scaling policy from being hidden in code.
+  unresolved:
+    - All R1 scientific parameters and decision thresholds remain to be frozen.

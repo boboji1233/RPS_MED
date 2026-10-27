@@ -1,0 +1,92 @@
+schema_version: 1
+preregistration_id: rps_med_tjdr_external_gate_v0.1
+date: 2026-08-26
+project: RPS-Med
+status: FROZEN_AWAITING_PASSPORT_AND_STANDING_AUTHORIZATION
+gate_role: INDEPENDENT_EXTERNAL_REPLICATION_NOT_R1_V07_RERUN
+
+immutable_prior_state:
+  rps_med_r1_v07_decision: NO_GO
+  record: metadata/gates/rps_med_r1_v07_formal_result_2026-08-26_v1.yaml
+  reinterpretation_or_overwrite: FORBIDDEN
+  threshold_lowering_to_rescue_prior_hypothesis: FORBIDDEN
+
+hypothesis:
+  statement: >-
+    The preregistered four-axis relation-persistence signal observed in TJDR
+    official train independently replicates in the sealed TJDR official test
+    split with non-trivial transition and structural-incomparability mass and
+    stable train/test phase geometry.
+  analysis_unit: IMAGE_INSTANCE_PAIR
+  patient_level_interpretation: FORBIDDEN
+  natural_prevalence_interpretation: FORBIDDEN_LESION_ENRICHED_SOURCE
+
+source_boundary:
+  development_reference: TJDR_OFFICIAL_TRAIN_448
+  sealed_replication: TJDR_OFFICIAL_TEST_113
+  train_development_evidence: metadata/evidence/rps_med_tjdr_train_development_2026-08-26_v1.yaml
+  test_scientific_access_before_freeze: FORBIDDEN
+  source_pooling: FORBIDDEN
+
+measurement:
+  axes: [ma, hem, ex, cws]
+  source_classes: {ma: 3, hem: 2, ex: 1, cws: 4}
+  source_cws_term: SE_SOFT_EXUDATE
+  complete_all_background_annotation: ZERO_PIXEL_BURDEN_ALL_FOUR_AXES
+  missing_or_unreadable_annotation: TECHNICAL_ABORT_NOT_NEGATIVE
+  burden_definition: UNCHANGED_FROM_RPS_MED_R1
+  fov_algorithm: TJDR_BLACK_BACKGROUND_DOMINANT_COMPONENT_V1
+  zero_measurement_exclusion_required: true
+
+relation_spectrum:
+  relation_algebra: UNCHANGED_FROM_RPS_MED_R1
+  reference_thresholds: UNCHANGED_FROM_RPS_MED_R1_V0_5
+  scale_policy: MARGIN_ONLY
+  log2_range: [-2.0, 2.0]
+  primary_grid_points: 17
+  sensitivity_grid_points: 33
+  critical_tolerance: ANALYTIC_MARGIN_BOUNDARY
+
+statistics:
+  bootstrap_unit: IMAGE_INSTANCE
+  pair_reconstruction: ALL_UNORDERED_PAIRS_OF_BOOTSTRAP_POSITIONS
+  independent_train_test_resampling: true
+  replicates: 5000
+  seed: 20260826
+  familywise_alpha: 0.05
+  stochastic_core_endpoint_count: 4
+  lower_quantile: 0.0125
+  upper_quantile: 0.9875
+  persisted_bootstrap_rows: false
+
+core_criteria:
+  test_transition_fraction_lower_strictly_above: 0.25
+  test_structural_incomparability_mass_lower_strictly_above: 0.05
+  train_test_integrated_agreement_lower_strictly_above: 0.90
+  train_test_median_critical_scale_log2_gap_upper_at_most: 0.5
+  test_maximum_17_33_mass_gap_at_most: 0.01
+  all_required_for_go: true
+
+decision:
+  GO: ALL_CORE_CRITERIA_PASS
+  NO_GO: ANY_CORE_CRITERION_FAILS
+  technical_abort: ANY_IDENTITY_SCHEMA_MEASUREMENT_OR_EXECUTION_FAILURE
+  result_driven_amendment_or_retry: FORBIDDEN
+  model_training_after_go: REQUIRES_SEPARATE_VERSIONED_MODEL_PROTOCOL
+
+privacy:
+  paths_in_output: false
+  source_identifiers_in_output: false
+  row_level_burdens_in_output: false
+  pair_rows_in_output: false
+  bootstrap_rows_in_output: false
+
+execution:
+  external_replication_gate: NOT_AUTHORIZED
+  exact_freeze_hash_authorization_required: true
+  formal_execution_count: 1
+  output_overwrite: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  gate0: NOT_RERUN
+  training: FORBIDDEN

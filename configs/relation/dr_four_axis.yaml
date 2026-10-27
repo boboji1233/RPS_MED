@@ -1,0 +1,28 @@
+axes: [ma, hem, ex, cws]
+direction: higher_is_worse
+delta:
+  ma: 2.13210791
+  hem: 7.33005532
+  ex: 7.72235597
+  cws: 8.15592432
+epsilon:
+  ma: 0.50085046
+  hem: 0.74138916
+  ex: 0.19392044
+  cws: 0.48575989
+max_width:
+  ma: 0.0
+  hem: 0.0
+  ex: 0.0
+  cws: 0.0
+numeric_tolerance: 1.0e-12
+precedence:
+  - dominance
+  - structural_incomparability
+  - equivalence
+  - unresolved
+status: FROZEN_BEFORE_GATE0_NOT_RUN
+evidence_record: metadata/evidence/gate0_relation_thresholds_2026-08-24_v1.yaml
+notes: >-
+  Values were frozen from official MAPLES manual S1/S2/S3 variability masks restricted to
+  MAPLES train. No MAPLES test or DDR test burden, pair, relation, or prevalence result was used.

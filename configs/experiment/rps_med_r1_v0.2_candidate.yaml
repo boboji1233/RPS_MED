@@ -1,0 +1,64 @@
+schema_version: 1
+config_id: rps_med_r1_v0.2_candidate
+status: DEVELOPMENT_ONLY_CANDIDATE_NOT_FORMAL_R1
+project: RPS-Med
+input_scope:
+  permitted:
+    - MAPLES_OFFICIAL_TRAIN
+    - DDR_LESION_TRAIN_VALID
+  held_out_or_test: FORBIDDEN
+  raw_paths_in_output: FORBIDDEN
+  pair_rows_in_output: FORBIDDEN
+relation_semantics: INHERIT_NTS_MED_FIVE_RELATION_ALGEBRA_UNCHANGED
+primary_scale_family:
+  policy: MARGIN_ONLY
+  log2_coordinates:
+    - -2.0
+    - -1.75
+    - -1.5
+    - -1.25
+    - -1.0
+    - -0.75
+    - -0.5
+    - -0.25
+    - 0.0
+    - 0.25
+    - 0.5
+    - 0.75
+    - 1.0
+    - 1.25
+    - 1.5
+    - 1.75
+    - 2.0
+  scales:
+    - 0.25
+    - 0.29730177875068026
+    - 0.3535533905932738
+    - 0.42044820762685725
+    - 0.5
+    - 0.5946035575013605
+    - 0.7071067811865476
+    - 0.8408964152537145
+    - 1.0
+    - 1.189207115002721
+    - 1.4142135623730951
+    - 1.681792830507429
+    - 2.0
+    - 2.378414230005442
+    - 2.8284271247461903
+    - 3.363585661014858
+    - 4.0
+critical_tolerance:
+  primary: ANALYTIC_MARGIN_PREDICATE_BOUNDARIES
+  sampled_brackets: QA_ONLY
+phase_diagram:
+  include_all_five_relations: true
+  sources_pooled: false
+cross_source_stability:
+  pointwise_total_variation: DESCRIPTIVE
+  integrated_total_variation: PENDING_IMPLEMENTATION
+execution_guards:
+  formal_r1: NOT_PERMITTED
+  model_training: FORBIDDEN
+  result_feedback_scale_selection: FORBIDDEN
+  output_overwrite: FORBIDDEN

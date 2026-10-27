@@ -1,0 +1,56 @@
+schema_version: 1
+config_id: rps_med_r1_v0.5
+preregistration: metadata/preregistration/rps_med_r1_v0.5.yaml
+status: FROZEN_AWAITING_EXACT_HASH_AUTHORIZATION
+confirmation_boundary:
+  maples_parent_count: 138
+  maples_development_count: 96
+  maples_confirmation_count: 42
+  maples_partition_method: SORT_STABLE_OPAQUE_INSTANCE_ID
+  ddr_confirmation_split: valid
+  ddr_confirmation_count: 149
+input_identity:
+  maples_main_archive: 88351ef4942f4772043df9ba794cb2e5c64bdf2410208a6044f2347d42496c68
+  maples_additional_archive: d618371acad153e97032a6b6c8a4aa758728cada5f9e4a142269aafb7e471e49
+  ddr_private_manifest: 06aecb097d75d14508196b312422a4365825c5185a62d32b02b26653d55439f4
+  boundary_lock: metadata/freezes/rps_med_r1_2_development_input_lock_2026-08-25_v1.yaml
+reference_thresholds:
+  delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+  epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+  max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+  numeric_tolerance: 1.0e-12
+scale:
+  policy: MARGIN_ONLY
+  log2_minimum: -2.0
+  log2_maximum: 2.0
+  primary_step: 0.25
+  sensitivity_step: 0.125
+  primary_points: 17
+  sensitivity_points: 33
+bootstrap:
+  method: IMAGE_INSTANCE_RESAMPLING_REBUILD_UNORDERED_PAIRS
+  duplicate_draws: DISTINCT_BOOTSTRAP_POSITIONS
+  pair_row_resampling: false
+  replicates: 5000
+  seed: 20260825
+  familywise_alpha: 0.05
+  stochastic_core_endpoint_count: 6
+  lower_quantile: 0.008333333333333333
+  upper_quantile: 0.9916666666666667
+  quantile_method: LINEAR
+criteria:
+  transition_fraction_lower_strictly_above: 0.25
+  structural_incomparability_mass_lower_strictly_above: 0.05
+  integrated_agreement_lower_strictly_above: 0.90
+  median_critical_scale_log2_gap_upper_at_most: 0.5
+  maximum_17_33_mass_gap_at_most: 0.01
+  all_required: true
+execution:
+  formal_r1: NOT_AUTHORIZED
+  gate0: NOT_RUN
+  model_training: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  prior_authorization_reuse: FORBIDDEN
+  pair_rows_persisted: false
+  bootstrap_rows_persisted: false

@@ -1,0 +1,84 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.5
+date: 2026-08-25
+project: RPS-Med
+status: FORMAL_R1_PROTOCOL_FROZEN_AWAITING_EXACT_HASH_AUTHORIZATION
+supersedes_candidate: metadata/preregistration/rps_med_r1_v0.4_candidate.yaml
+development_evidence: metadata/evidence/rps_med_r1_2_development_calibration_2026-08-25_v1.yaml
+analysis_unit:
+  primary: IMAGE_INSTANCE_PAIR
+  patient_level_claims: FORBIDDEN_WITHOUT_VALIDATED_IDENTIFIERS
+confirmation_scopes:
+  maples_dr_messidor1:
+    parent: OFFICIAL_TRAIN
+    selection: OPAQUE_ID_SORT_REMAINING_42
+    expected_count: 42
+  ddr:
+    parent: LESION_TASK
+    selection: OFFICIAL_VALID
+    expected_count: 149
+  old_official_test: FORBIDDEN_EXPOSED_PILOT
+relation_semantics:
+  axes: [ma, hem, ex, cws]
+  algebra: NTS_MED_FIVE_RELATION_INHERITED_UNCHANGED
+  unresolved_transitive_inference: FORBIDDEN
+scale_family:
+  policy: MARGIN_ONLY
+  coordinate: LOG2_SCALE
+  minimum_scale: 0.25
+  maximum_scale: 4.0
+  primary_grid_points: 17
+  grid_sensitivity_points: 33
+  source_pooling: false
+critical_tolerance:
+  definition: FIRST_ANALYTIC_MARGIN_PREDICATE_RELATION_CHANGE_WITHIN_RANGE
+  no_change: NO_FINITE_CRITICAL_SCALE
+  source_summary: WEIGHTED_MEDIAN_AMONG_TRANSITIONING_PAIRS
+uncertainty:
+  method: IMAGE_INSTANCE_BOOTSTRAP_REBUILD_UNORDERED_PAIRS
+  pair_row_bootstrap: false
+  duplicate_draws: DISTINCT_BOOTSTRAP_POSITIONS_WITH_SELF_PAIR_RELATION
+  replicates: 5000
+  seed: 20260825
+  confidence_family: ONE_SIDED_BONFERRONI_FWER
+  familywise_alpha: 0.05
+  stochastic_core_endpoint_count: 6
+  lower_quantile: 0.008333333333333333
+  upper_quantile: 0.9916666666666667
+  quantile_method: LINEAR
+core_criteria:
+  all_required: true
+  maples_transition_fraction_lower_strictly_above: 0.25
+  ddr_transition_fraction_lower_strictly_above: 0.25
+  maples_structural_incomparability_mass_lower_strictly_above: 0.05
+  ddr_structural_incomparability_mass_lower_strictly_above: 0.05
+  cross_source_integrated_agreement_lower_strictly_above: 0.90
+  median_critical_scale_log2_gap_upper_at_most: 0.5
+  maples_maximum_17_33_mass_gap_at_most: 0.01
+  ddr_maximum_17_33_mass_gap_at_most: 0.01
+unestimable:
+  missing_source_transition_median: CORE_FAILURE
+  bootstrap_replicate_without_source_transition: CORE_FAILURE
+  nonfinite_endpoint: TECHNICAL_ABORT
+decision:
+  precedence: [TECHNICAL_ABORT, CORE_NO_GO, GO]
+  any_core_failure: NO_GO
+  all_core_pass: GO
+  result_feedback_tuning: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  automatic_training: FORBIDDEN
+privacy:
+  pair_rows_persisted: false
+  bootstrap_rows_persisted: false
+  local_paths_in_output: false
+  instance_identifiers_in_output: false
+authorization:
+  formal_r1: REQUIRED_NOT_GRANTED
+  authorization_scope: FORMAL_R1_ONCE
+  prior_authorization_reuse: FORBIDDEN
+  output_overwrite: FORBIDDEN
+upstream_state:
+  nts_med_gate0_v0_9: NO_GO_IMMUTABLE
+  fixed_threshold_route: CLOSED
+  gate0_rerun: FORBIDDEN
+  model_training: FORBIDDEN

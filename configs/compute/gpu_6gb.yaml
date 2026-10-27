@@ -1,0 +1,9 @@
+device: auto
+mixed_precision: true
+input_size: 384
+batch_size: 2
+gradient_accumulation: 4
+num_workers: 2
+pin_memory: true
+fallback_input_sizes: [320, 256]
+notes: "M0-M1 does not train models."

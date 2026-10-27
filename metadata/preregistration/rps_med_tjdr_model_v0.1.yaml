@@ -1,0 +1,91 @@
+schema_version: 1
+preregistration_id: rps_med_tjdr_model_v0.1
+date: 2026-08-26
+project: RPS-Med
+status: DEVELOPMENT_PROTOCOL_FROZEN_TEST_SEALED
+
+scientific_question: >-
+  Can a retinal image model learn the complete four-axis relation-persistence
+  spectrum between two TJDR image instances, including transition occurrence
+  and critical tolerance, beyond a training-distribution frequency prior?
+
+prior_gate:
+  gate: rps_med_tjdr_external_gate_formal_result_2026-08-26_v1
+  decision: GO
+  old_rps_med_r1_v07: IMMUTABLE_NO_GO
+
+analysis_unit:
+  input: ORDERED_PAIR_OF_UNIQUE_IMAGE_CONTENT_UNITS
+  output: SEVENTEEN_SCALE_FIVE_RELATION_SPECTRUM
+  patient_level_interpretation: FORBIDDEN
+  treatment_priority_interpretation: FORBIDDEN
+
+data_boundary:
+  development_source: TJDR_OFFICIAL_TRAIN
+  official_test: SEALED_FOR_MODEL_DEVELOPMENT
+  cross_split_exact_duplicate_action: EXCLUDE_TRAIN_SIDE_ONLY
+  exact_duplicate_train_annotations: COLLAPSE_IMAGE_AND_AVERAGE_TRANSFORMED_BURDEN
+  expected_development_unique_images: 442
+  validation_fraction: 0.20
+  split_seed: 20260826
+  patient_eye_grouping: UNAVAILABLE_NOT_CLAIMED
+
+immutable_semantics:
+  axes: [ma, hem, ex, cws]
+  source_mapping: {ma: 3, hem: 2, ex: 1, cws: 4}
+  relation_algebra: UNCHANGED_FROM_RPS_MED_R1
+  tolerance_policy: MARGIN_ONLY
+  scale_grid: LOG2_MINUS2_TO_PLUS2_STEP_0_25
+  threshold_source: configs/experiment/rps_med_r1_v0.5.yaml
+  threshold_modification_for_model: FORBIDDEN
+  unresolved_transitive_inference: FORBIDDEN
+
+candidate_families:
+  - TRAIN_SCALE_SPECIFIC_MAJORITY_NONIMAGE_BASELINE
+  - FINETUNED_IMAGE_TO_BURDEN_ANALYTIC_SPECTRUM
+  - FROZEN_IMAGENET_DIRECT_PAIR_SPECTRUM
+  - BURDEN_SUPERVISED_MULTITASK_PAIR_SPECTRUM
+
+primary_development_metric:
+  name: MULTISCALE_MACRO_F1
+  definition: MEAN_OF_PER_SCALE_MACRO_F1_OVER_GROUND_TRUTH_SUPPORTED_CLASSES
+  seed_aggregation: ARITHMETIC_MEAN_ACROSS_THREE_FIXED_SEEDS
+
+secondary_metrics:
+  - POOLED_RELATION_ACCURACY
+  - MEAN_PHASE_TOTAL_VARIATION
+  - TRANSITION_ROC_AUC
+  - CRITICAL_LOG2_SCALE_MAE_ON_TRUE_TRANSITION_PAIRS
+
+model_selection:
+  eligible_candidates: [image_burden_analytic, frozen_imagenet_pair, rps_multitask_pair]
+  rule: HIGHEST_MEAN_VALIDATION_MULTISCALE_MACRO_F1
+  deterministic_tie_break: LEXICOGRAPHIC_CANDIDATE_NAME
+  development_gate: >-
+    The selected candidate mean and each seed must exceed the scale-specific
+    majority baseline by at least 0.05 macro-F1.
+  no_go_action: STOP_BEFORE_OFFICIAL_TEST
+
+pretraining:
+  model: RESNET18_IMAGENET1K_V1
+  official_weight_sha256: f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec
+  exposure_audit_required_before_test: true
+
+formal_test_contract_to_freeze_after_development_pass:
+  evaluation_count: 1
+  seed_ensemble: ARITHMETIC_MEAN_OF_THREE_SEED_PROBABILITIES_OR_BURDENS
+  primary_comparison: SELECTED_MODEL_VERSUS_SCALE_SPECIFIC_MAJORITY_BASELINE
+  resampling_unit: UNIQUE_TEST_IMAGE_INSTANCE
+  pair_reconstruction: ALL_UNORDERED_PAIRS_OF_BOOTSTRAP_POSITIONS
+  bootstrap_replicates: 5000
+  bootstrap_seed: 20260829
+  primary_success: PAIRED_BOOTSTRAP_LOWER_95_PERCENT_BOUND_MACRO_F1_GAIN_ABOVE_ZERO
+  test_feedback_tuning: FORBIDDEN
+  automatic_retry: FORBIDDEN
+
+guards:
+  development_training_authorized_by_standing_owner_delegation: true
+  official_test_access_during_development: false
+  source_identifier_output: false
+  raw_data_or_weight_commit: false
+  paper_writing: NOT_STARTED

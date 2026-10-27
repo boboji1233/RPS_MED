@@ -1,0 +1,52 @@
+schema_version: 1
+preregistration_id: rps_med_ddr_model_transfer_v0.1
+date: 2026-08-26
+project: RPS-Med
+status: FROZEN_AWAITING_PASSPORT_AND_AUTHORIZATION
+
+hypothesis: >-
+  The fixed three-seed TJDR-selected RPS multitask ensemble improves multiscale
+  macro-F1 on DDR lesion official valid over the scale-specific majority
+  spectrum learned only from TJDR development train.
+
+role:
+  analysis: EXTERNAL_TRANSFER_SECONDARY_CONFIRMATION
+  not_a_rerun_of: RPS_MED_R1_V0_7
+  prior_ddr_exposure: MODEL_FREE_RELATION_ANALYSIS_ONLY
+  prior_result_reinterpretation: FORBIDDEN
+
+boundary:
+  source: DDR_LESION_OFFICIAL_VALID_149
+  modeling_unit: UNIQUE_IMAGE_CONTENT
+  unordered_pairs: 11026
+  patient_level_interpretation: FORBIDDEN
+  natural_prevalence_interpretation: FORBIDDEN
+
+model_lock:
+  selected_model: rps_multitask_pair
+  seeds: [20260826, 20260827, 20260828]
+  source_of_selection: TJDR_DEVELOPMENT_ONLY
+  retraining: FORBIDDEN
+  model_or_seed_reselection: FORBIDDEN
+
+primary_endpoint:
+  contrast: SELECTED_MINUS_SCALE_SPECIFIC_TJDR_TRAIN_MAJORITY
+  metric: MULTISCALE_MACRO_F1
+  bootstrap_unit: UNIQUE_DDR_IMAGE
+  replicates: 5000
+  seed: 20260831
+  confidence_interval: PERCENTILE_95
+  transfer_pass_rule: LOWER_BOUND_STRICTLY_ABOVE_ZERO
+
+decision:
+  TRANSFER_PASS: PRIMARY_PASS_RULE_TRUE
+  TRANSFER_NOT_CONFIRMED: PRIMARY_PASS_RULE_FALSE
+  technical_abort: ANY_FREEZE_AUTHORIZATION_IDENTITY_DECODE_MODEL_OR_STATISTICS_FAILURE
+  automatic_retry: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+
+privacy:
+  image_cache_persisted: false
+  row_predictions_persisted: false
+  source_identifiers_recorded: false
+  tracked_output: AGGREGATE_ONLY

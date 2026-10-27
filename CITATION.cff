@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite the software version used in your research."
+title: "RPS-Med: Relation-Persistence Spectrum Learning for Medical Images"
+type: software
+version: 0.1.0
+authors:
+  - name: "RPS-Med contributors"
+license: MIT
+repository-code: "https://github.com/boboji1233/RPS_MED"

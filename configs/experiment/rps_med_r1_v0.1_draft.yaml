@@ -1,0 +1,23 @@
+schema_version: 1
+config_id: rps_med_r1_v0.1_draft
+status: SYNTHETIC_ONLY_NOT_EXECUTABLE_ON_REAL_DATA
+project: RPS-Med
+input_mode: SYNTHETIC_ONLY
+relation_semantics: INHERIT_NTS_MED_FIVE_RELATION_ALGEBRA_UNCHANGED
+tolerance_parameterisation:
+  policy: EXPLICIT_CONFIG_PER_SCALE
+  scale_range: NOT_FROZEN
+  scale_grid: NOT_FROZEN
+  scaled_components: NOT_FROZEN
+outputs:
+  pair_identifiers_persisted: false
+  source_identifiers_persisted: false
+  aggregate_phase_diagram: SYNTHETIC_TEST_ONLY
+  critical_tolerance: SAMPLED_TRANSITION_BRACKET_ONLY
+  cross_source_total_variation: DESCRIPTIVE_NON_DECISION_BEARING
+execution_guards:
+  real_data: FORBIDDEN
+  held_out_or_test: FORBIDDEN
+  r1_gate: NOT_RUN
+  model_training: FORBIDDEN
+  output_overwrite: FORBIDDEN

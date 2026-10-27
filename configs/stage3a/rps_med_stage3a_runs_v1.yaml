@@ -1,0 +1,55 @@
+schema_version: 1
+config_id: rps_med_stage3a_runs_v1
+common: configs/stage3a/rps_med_stage3a_common_v1.yaml
+status: FROZEN_BEFORE_STAGE3A_TRAINING
+
+encoder_contracts:
+  frozen_imagenet: {train: false, burden_weight: 0.0, presence_weight: 0.0, geometric_augmentation: false}
+  burden_only: {train: true, burden_weight: 1.0, presence_weight: 0.0, geometric_augmentation: true}
+  presence_only: {train: true, burden_weight: 0.0, presence_weight: 0.25, geometric_augmentation: true}
+  burden_presence: {train: true, burden_weight: 1.0, presence_weight: 0.25, geometric_augmentation: true}
+  burden_presence_no_geometry: {train: true, burden_weight: 1.0, presence_weight: 0.25, geometric_augmentation: false}
+
+unique_runs:
+  B0: {tier: P0, family: majority, encoder: none, head: scale_specific_majority, losses: []}
+  B1: {tier: P0, family: analytic, encoder: burden_presence, head: analytic_algebra, losses: [burden, presence]}
+  B2_A1: {tier: P0, family: pair, encoder: frozen_imagenet, head: joint_spectrum, losses: [spectrum]}
+  B3_A3: {tier: P0, family: pair, encoder: burden_presence, head: joint_spectrum, losses: [spectrum]}
+  B4: {tier: P0, family: pair, encoder: burden_presence, head: lambda_conditioned_shared, losses: [spectrum]}
+  B5: {tier: P0, family: pair, encoder: burden_presence, head: independent_scale, losses: [spectrum]}
+  B6_A0_A12full: {tier: P0, family: pair, encoder: burden_presence, head: joint_spectrum, losses: [spectrum, transition, critical]}
+  A2: {tier: P0, family: pair, encoder: burden_only, head: joint_spectrum, losses: [spectrum]}
+  A4: {tier: P0, family: pair, encoder: frozen_imagenet, head: joint_spectrum, losses: [spectrum, transition]}
+  A5: {tier: P0, family: pair, encoder: frozen_imagenet, head: joint_spectrum, losses: [spectrum, critical]}
+  A6: {tier: P0, family: pair, encoder: frozen_imagenet, head: joint_spectrum, losses: [spectrum, transition, critical]}
+  A7: {tier: P0, family: pair, encoder: presence_only, head: joint_spectrum, losses: [spectrum, transition, critical]}
+  A8: {tier: P0, family: pair, encoder: burden_presence, head: joint_spectrum, losses: [spectrum, critical]}
+  A9: {tier: P0, family: pair, encoder: burden_presence, head: joint_spectrum, losses: [spectrum, transition]}
+  A10: {tier: P0, family: pair, encoder: burden_only, head: joint_spectrum, losses: [spectrum, transition, critical]}
+  A11: {tier: P0, family: diagnostic, encoder: burden_presence, head: merged_si_unresolved_four_state, losses: [spectrum], five_state_primary: NOT_APPLICABLE}
+  A12_signed: {tier: P0, family: pair, encoder: burden_presence, head: joint_spectrum, pair_representation: [signed_difference], losses: [spectrum, transition, critical]}
+  A12_absolute: {tier: P0, family: pair, encoder: burden_presence, head: joint_spectrum, pair_representation: [absolute_difference], losses: [spectrum, transition, critical]}
+  B7: {tier: P1, family: scalar_stress_test, encoder: burden_presence, head: ranknet_scalar_cutpoints, native_states: [LESS, GREATER, EQUIVALENT]}
+  A14: {tier: P1, family: pair, encoder: burden_presence, head: joint_spectrum, losses: [spectrum, transition, critical], class_weighting: NONE}
+  A15: {tier: P1, family: pair, encoder: burden_presence_no_geometry, head: joint_spectrum, losses: [spectrum, transition, critical]}
+  A16: {tier: P1, family: pair, encoder: burden_presence, head: joint_spectrum, losses: [spectrum, transition, critical, soft_admissibility]}
+
+aliases:
+  B2: B2_A1
+  A1: B2_A1
+  B3: B3_A3
+  A3: B3_A3
+  B6: B6_A0_A12full
+  A0: B6_A0_A12full
+  A12_full: B6_A0_A12full
+  A13_frozen: A6
+  A13_finetuned: B6_A0_A12full
+
+adjacent_methods:
+  B8: {tier: P1, status: REQUIRES_PRIMARY_SOURCE_FAIR_ADAPTATION_AUDIT, fallback: NOT_FAIRLY_ADAPTABLE}
+  B9: {tier: P1, status: REQUIRES_PRIMARY_SOURCE_FAIR_ADAPTATION_AUDIT, fallback: NOT_FAIRLY_ADAPTABLE}
+
+execution_order: [B0, B1, B2_A1, B3_A3, B4, B5, B6_A0_A12full, A2, A4, A5, A6, A7, A8, A9, A10, A11, A12_signed, A12_absolute, B7, A14, A15, A16]
+seed_order: [20260826, 20260827, 20260828]
+selective_retry: FORBIDDEN
+result_driven_change: FORBIDDEN

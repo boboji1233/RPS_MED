@@ -1,0 +1,92 @@
+schema_version: 1
+config_id: rps_med_stage3b_grammar_v1
+project: RPS-Med
+status: FROZEN_BEFORE_STAGE3B_IMPLEMENTATION
+preregistration: metadata/preregistration/rps_med_stage3b_grammar_v1.yaml
+data:
+  allowed_cache: reports/audits/rps_med_tjdr_model_cache_2026-08-26_v1.npz
+  allowed_cache_sha256: 25b29c2fb2b10f8eac9a44e20f027c6bf3e521ed7b01fcea6f3f0db8f55a7f10
+  partition_digest: c4ff06ab1cc8a130e43ec7abc1d32f45acec5b0d9008ad998f06c19262385ebe
+  unique_units: 442
+  train_units: 354
+  validation_units: 88
+  train_pairs: 62481
+  validation_pairs: 3828
+  image_size: 768
+  pair_construction: WITHIN_PARTITION_UNORDERED_NO_SELF_PAIRS
+relation:
+  states: [LESS, GREATER, EQUIVALENT, STRUCTURAL_INCOMPARABLE, UNRESOLVED]
+  scales: [0.25, 0.29730177875068026, 0.3535533905932738, 0.42044820762685725, 0.5, 0.5946035575013605, 0.7071067811865476, 0.8408964152537145, 1.0, 1.189207115002721, 1.4142135623730951, 1.681792830507429, 2.0, 2.378414230005442, 2.8284271247461903, 3.363585661014858, 4.0]
+  thresholds:
+    delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+    epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+    max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+    numeric_tolerance: 1.0e-12
+grammar:
+  path_count: 101
+  constant_states: [0, 1, 2, 3, 4]
+  transition_pairs: [[0, 2], [0, 4], [1, 2], [1, 4], [3, 2], [3, 4]]
+  change_boundaries: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+  tie_break: LOWEST_CANONICAL_PATH_ID
+fixed_stage3a_root: reports/stage3a/2026-08-26_181532+0800/experiment
+fixed_inputs:
+  '20260826':
+    encoder_sha256: a7f123fc3db279a8f2a46c357e05af086f99e7d3d905ed3f88e8d52a12d20174
+    full_head_sha256: 6f6d8def82335434ff67bd47f0455bd25b9c3fa9614df479f734d7681f449b6f
+    full_predictions_sha256: 0c8239d19e204c4df6605128c6941b1d80222e737f4705881fd3ae1cfb42d81e
+  '20260827':
+    encoder_sha256: d0838f6ce708dd91b80924308d44ae1e32a7240b147b0e3da8f124288beed31d
+    full_head_sha256: e7ebc05812eaebf81e2f8523b07874757844c4e74a2adeb18922c6547f7ad94d
+    full_predictions_sha256: 40c25e2e7c99a53b8f399dfb72c6015c16fae2197cd3ca1d46052e803181cbf7
+  '20260828':
+    encoder_sha256: ac353e482229302abec6f4de932eda065775621fb844b7be2a9607c9b009596b
+    full_head_sha256: cb3d70160e14ef46d3d0e0cd479f6e20d19b75de152ef96856e7060061f65f0d
+    full_predictions_sha256: b4a698eb9f99938be0b1852ffa7e9e604735ca0c0e76fad1bdff4220dee40a99
+methods:
+  G0: {kind: frozen_unconstrained_reference, training: false}
+  G1: {kind: minimum_hamming_projection, training: false}
+  G2: {kind: maximum_log_likelihood_projection, training: false}
+  G3: {kind: structured_path_nll, training: head_only, structured_weight: 1.0, scale_ce_weight: 0.0}
+  G4: {kind: hybrid_scale_ce_and_structured_nll, training: head_only, structured_weight: 1.0, scale_ce_weight: 1.0}
+training:
+  pair_representation: full
+  hidden_dimensions: [512, 256]
+  dropout: 0.20
+  batch_size: 1024
+  max_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: ADAMW
+  scheduler: COSINE_ANNEALING
+  scale_loss: CLASS_WEIGHTED_CROSS_ENTROPY
+  maximum_class_weight: 5.0
+  early_stopping_metric: VALIDATION_MULTISCALE_MACRO_F1
+  early_stopping_patience: 12
+  early_stopping_min_delta: 0.001
+seeds: [20260826, 20260827, 20260828]
+metrics:
+  primary: [INVALID_SPECTRUM_RATE, MULTI_TRANSITION_RATE, SEVENTEEN_SCALE_MEAN_MACRO_F1]
+  secondary: [RELATION_ACCURACY, PHASE_TOTAL_VARIATION, PER_STATE_F1, PAIR_SWAP_CONSISTENCY, BEST_EPOCH, RUNTIME, TRAINABLE_PARAMETERS, PEAK_CUDA_VRAM]
+  statistical_unit: VALIDATION_UNIQUE_CONTENT_NODE
+  pair_row_bootstrap: FORBIDDEN
+  multiplicity: HOLM_WITHIN_METRIC_FAMILY
+interpretation:
+  fidelity_preserving_macro_f1_delta_floor: -0.010
+  invalid_rate_required: 0.0
+  multi_transition_rate_required: 0.0
+runtime:
+  environment: D:/boshi/am/.conda/rps-med-stage3b
+  device: cuda
+  max_process_cuda_bytes: 3000000000
+  torch_memory_fraction: 0.17
+  deterministic_algorithms: true
+  num_workers: 0
+  automatic_retry: false
+  append_only: true
+denylist:
+  forbidden_tokens: [official_test, formal_test, model_test, test_cache, ddr, authorization, passport]
+  formal_result_recompute: FORBIDDEN
+  encoder_update: FORBIDDEN
+  source_identifiers_in_output: FORBIDDEN
+  checkpoint_commit: FORBIDDEN
+  remote_push: FORBIDDEN

@@ -1,0 +1,45 @@
+schema_version: 1
+config_id: rps_med_r1_v0.6
+preregistration: metadata/preregistration/rps_med_r1_v0.6.yaml
+status: TECHNICAL_DIAGNOSTIC_FROZEN_AWAITING_EXACT_HASH_AUTHORIZATION
+scientific_base_config: configs/experiment/rps_med_r1_v0.5.yaml
+scientific_base_config_sha256: e602f6c2a5fbab96ee1107631767fd53af72a39b2e0c7ac8e9c57e7b82f5b0b0
+scientific_parameter_changes: false
+prior_formal_result: metadata/gates/rps_med_r1_v05_formal_result_2026-08-25_v1.yaml
+prior_formal_result_sha256: 1f6c42841df18bea04a54145f56692e0cab9aedc96cb67208ddaf5245fb4a2fc
+diagnostics:
+  ddr_substages:
+    - DDR_SAMPLE_SCOPE
+    - DDR_IMAGE_DECODE
+    - DDR_FOV_EXTRACTION
+    - DDR_FOV_VALIDATION
+    - DDR_MASK_DECODE
+    - DDR_BURDEN_MEASUREMENT
+    - DDR_RECORD_CONSTRUCTION
+    - DDR_SOURCE_SUMMARY
+  exclusion_reason_codes:
+    - DDR_IMAGE_DECODE_ERROR
+    - DDR_FOV_EXTRACTION_ERROR
+    - DDR_FOV_EMPTY
+    - DDR_FOV_MULTIPLE_COMPONENTS
+    - DDR_FOV_AREA_RATIO_OUT_OF_RANGE
+    - DDR_FOV_OTHER_INVALID
+    - DDR_FOV_RATIO_NONFINITE
+    - DDR_MASK_DECODE_ERROR
+    - DDR_BURDEN_MEASUREMENT_ERROR
+    - DDR_RECORD_CONSTRUCTION_ERROR
+  reason_code_format: TECHNICAL_ERROR:DDR_CONFIRMATION_MEASUREMENT:SUBSTAGE:ERROR_FAMILY
+  aggregate_reason_counts_only: true
+  exception_messages_in_output: false
+  tracebacks_in_output: false
+  paths_in_output: false
+  instance_identifiers_in_output: false
+  row_level_measurements_in_output: false
+execution:
+  formal_r1: NOT_AUTHORIZED
+  model_training: FORBIDDEN
+  gate0_rerun: FORBIDDEN
+  prior_authorization_reuse: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  automatic_retry: FORBIDDEN

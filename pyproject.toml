@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rps-med"
+version = "0.1.0"
+description = "Relation-persistence spectrum analysis for medical images"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+authors = [
+  { name = "RPS-Med contributors" },
+]
+keywords = ["medical-imaging", "partial-order", "relation-algebra", "retina"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+]
+dependencies = [
+  "numpy>=1.26",
+  "Pillow>=10.0",
+  "PyYAML>=6.0",
+  "xlrd>=2.0,<3",
+]
+
+[project.optional-dependencies]
+parquet = ["pyarrow>=15.0"]
+model = ["torch>=2.7,<2.8", "torchvision>=0.22,<0.23"]
+dev = [
+  "mypy>=1.11",
+  "pyarrow>=15.0",
+  "pytest>=8.0",
+  "ruff>=0.6",
+  "types-PyYAML>=6.0",
+  "xlwt>=1.3,<2",
+]
+
+[project.scripts]
+rps-med-development-calibration = "rps_med.cli.development_calibration:main"
+rps-med-formal-r1 = "rps_med.cli.formal_r1:main"
+rps-med-formal-r1-v06 = "rps_med.cli.formal_r1_v06:main"
+rps-med-synthetic-r1 = "rps_med.cli.synthetic_r1:main"
+rps-med-synthetic-r1-v06 = "rps_med.cli.synthetic_r1_v06:main"
+rps-med-tjdr-development = "rps_med.cli.tjdr_development:main"
+rps-med-tjdr-external-gate = "rps_med.cli.formal_tjdr_external:main"
+rps-med-synthetic-tjdr-external = "rps_med.cli.synthetic_tjdr_external:main"
+rps-med-tjdr-leakage-audit = "rps_med.cli.tjdr_leakage_audit:main"
+rps-med-build-tjdr-model-cache = "rps_med.cli.build_tjdr_model_cache:main"
+rps-med-train-tjdr-models = "rps_med.cli.train_tjdr_models:main"
+rps-med-formal-tjdr-model-test = "rps_med.cli.formal_tjdr_model_test:main"
+rps-med-audit-tjdr-model-robustness = "rps_med.cli.audit_tjdr_model_robustness:main"
+rps-med-audit-tjdr-ddr-model-overlap = "rps_med.cli.audit_tjdr_ddr_model_overlap:main"
+rps-med-formal-ddr-model-transfer = "rps_med.cli.formal_ddr_model_transfer:main"
+rps-med-audit-pair-bootstrap = "rps_med.cli.audit_pair_bootstrap:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nts_med = ["py.typed"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [".conda", ".venv", "reports/feasibility/synthetic_smoke"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src"]
+warn_unused_configs = true

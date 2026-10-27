@@ -1,0 +1,88 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.2_candidate
+date: 2026-08-25
+project: RPS-Med
+status: METHOD_CANDIDATE_SELECTED_FOR_DEVELOPMENT_ONLY_NOT_R1_GATE_FROZEN
+supersedes_draft: metadata/preregistration/rps_med_r1_v0.1_draft.yaml
+authorization:
+  development_only_calibration_permitted: true
+  held_out_or_test_reading_permitted: false
+  formal_r1_run_permitted: false
+  model_training: FORBIDDEN
+upstream_boundary:
+  nts_med_gate0_v0_9: NO_GO_FROZEN_IMMUTABLE
+  nts_med_result_role: PILOT_MOTIVATION_ONLY
+  prior_held_out_status: EXPOSED_NOT_NEW_CONFIRMATORY
+analysis_unit:
+  primary: IMAGE_INSTANCE_PAIR
+  patient_level_claims: FORBIDDEN_WITHOUT_VALIDATED_IDENTIFIERS
+relation_semantics:
+  source: nts_med_five_relation_algebra
+  status: INHERITED_UNCHANGED
+primary_scale_family:
+  policy: MARGIN_ONLY
+  formula:
+    delta: scale_times_reference_delta
+    epsilon: reference_epsilon_fixed
+    max_width: reference_max_width_fixed
+    numeric_tolerance: reference_numeric_tolerance_fixed
+  coordinate: LOG2_SCALE
+  minimum_scale: 0.25
+  maximum_scale: 4.0
+  grid_log2_start: -2.0
+  grid_log2_stop: 2.0
+  grid_log2_step: 0.25
+  grid_point_count: 17
+grid_sensitivity:
+  policy: MARGIN_ONLY
+  grid_log2_step: 0.125
+  grid_point_count: 33
+  decision_bearing: false
+secondary_scale_family:
+  policy: MARGIN_AND_EQUIVALENCE
+  decision_bearing: false
+  purpose: DEVELOPMENT_ONLY_SEMANTIC_SENSITIVITY
+critical_tolerance:
+  primary: ANALYTIC_MARGIN_PREDICATE_BOUNDARIES
+  boundary_states: BELOW_AT_ABOVE
+  sampled_brackets: QA_ONLY
+  delta_zero_axes: NO_SCALE_BOUNDARY
+phase_diagram:
+  relation_set:
+    - LESS
+    - GREATER
+    - EQUIVALENT
+    - STRUCTURAL_INCOMPARABLE
+    - UNRESOLVED
+  sources_pooled: false
+  unresolved_included: true
+  pair_rows_persisted: false
+cross_source_stability:
+  candidate_metric: ONE_MINUS_NORMALIZED_LOG_SCALE_INTEGRATED_TOTAL_VARIATION
+  current_implementation: POINTWISE_TOTAL_VARIATION_AND_ONE_MINUS_TV
+  decision_threshold: NOT_FROZEN
+uncertainty:
+  resampling_unit: IMAGE_INSTANCE
+  pair_level_bootstrap: FORBIDDEN
+  replicate_count: CANDIDATE_5000_NOT_FROZEN
+r1_gate:
+  status: NOT_RUN
+  numeric_thresholds: NOT_FROZEN
+  decision_precedence: CANDIDATE_ANY_CORE_FAILURE_IMPLIES_NO_GO
+  automatic_training_on_go: FORBIDDEN
+development_next:
+  sources:
+    - MAPLES_OFFICIAL_TRAIN
+    - DDR_LESION_TRAIN_VALID
+  inputs_frozen_before_result_reading: REQUIRED
+  aggregate_outputs_only: true
+  confirmatory_boundary_after_calibration: REQUIRED
+material_passport:
+  observation:
+    - Candidate scale policies and analytic margin boundaries pass synthetic tests.
+  source_supported_semantics:
+    - The inherited five-relation algebra remains unchanged.
+  inference:
+    - Margin-only scaling is the minimum-change primary family for development calibration.
+  unresolved:
+    - Numeric R1 thresholds, simultaneous uncertainty bands, and confirmatory data boundaries remain unfrozen.

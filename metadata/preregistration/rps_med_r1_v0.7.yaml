@@ -1,0 +1,89 @@
+schema_version: 1
+preregistration_id: rps_med_r1_v0.7
+date: 2026-08-26
+project: RPS-Med
+status: FROZEN_AWAITING_EXACT_HASH_AUTHORIZATION
+amendment_type: VERSIONED_FOV_MEASUREMENT_AMENDMENT
+
+inherits_scientific_protocol:
+  preregistration: metadata/preregistration/rps_med_r1_v0.5.yaml
+  preregistration_sha256: 38ae9dae9f298b7c8196af2355c97b1f555099060b336e13692f53336b4478b7
+  experiment_config: configs/experiment/rps_med_r1_v0.5.yaml
+  experiment_config_sha256: e602f6c2a5fbab96ee1107631767fd53af72a39b2e0c7ac8e9c57e7b82f5b0b0
+  diagnostics_config: configs/experiment/rps_med_r1_v0.6.yaml
+  diagnostics_config_sha256: 24b04d23cf406eb5d616f0d2238ec99b5fa92c9e26d6ec8c48552e69ab975ede
+
+prior_formal_result:
+  record: metadata/gates/rps_med_r1_v06_formal_result_2026-08-25_v1.yaml
+  record_sha256: dc31626d9e3b0028e171c7336ceef5a6a0b2c37fb6e128fea657a569b7b55aea
+  status: FORMAL_RPS_MED_R1_V0_6_ABORTED_TECHNICAL
+  aggregate_signal_disclosed: DDR_FOV_MULTIPLE_COMPONENTS_COUNT_1
+  instance_identity_seen: false
+  instance_geometry_seen: false
+  lesion_or_relation_result_seen: false
+  authorization_consumed: true
+  immutable: true
+
+measurement_amendment:
+  axis: DDR_FOV_DENOMINATOR
+  algorithm_version: DDR_DOMINANT_COMPONENT_V1
+  legacy_algorithm_version: DDR_BLACK_BACKGROUND_OR_INSCRIBED_ELLIPSE_V2
+  behavior_change_limited_to: LEGACY_MULTIPLE_COMPONENTS
+  background_threshold: 5.0
+  minimum_area_ratio: 0.10
+  maximum_area_ratio: 0.98
+  substantial_component_ratio: 0.001
+  dominant_component_min_share: 0.90
+  dominance_denominator: ALL_SUBSTANTIAL_FOREGROUND_PIXELS
+  unique_largest_required: true
+  hole_filling: INHERITED
+  full_frame_inscribed_ellipse_fallback: INHERITED
+  disconnected_component_union: FORBIDDEN
+  rectangular_image_denominator: FORBIDDEN
+  lesion_mask_or_grade_conditioning: FORBIDDEN
+  ambiguous_multiple_components: TECHNICAL_ABORT
+  implicit_case_deletion: FORBIDDEN
+  denominator_change_by_exclusion: FORBIDDEN
+
+development_validation:
+  scope: DDR_LESION_OFFICIAL_TRAIN_383
+  scientific_confirmation_scope_opened: false
+  lesion_masks_opened: false
+  relation_results_computed: false
+  required_legacy_valid_mask_difference_count: 0
+  required_image_decode_exclusion_count: 0
+  aggregate_output_only: true
+
+scientific_invariance:
+  data_sources: UNCHANGED
+  confirmation_boundary: UNCHANGED
+  four_axis_burden_semantics: UNCHANGED_EXCEPT_FOV_DENOMINATOR_RESOLUTION
+  relation_algebra: UNCHANGED
+  reference_thresholds: UNCHANGED
+  tolerance_scale_grid: UNCHANGED
+  critical_tolerance: UNCHANGED
+  bootstrap: UNCHANGED
+  simultaneous_control: UNCHANGED
+  decision_thresholds: UNCHANGED
+  zero_exclusion_contract: UNCHANGED
+  fov_measurement_algorithm: CHANGED_AND_VERSIONED
+
+privacy:
+  aggregate_counts_only: true
+  exception_messages_in_output: false
+  traceback_in_output: false
+  paths_in_output: false
+  instance_identifiers_in_output: false
+  row_level_measurements_in_output: false
+
+execution:
+  development_fov_audit: PERMITTED_ONCE_WRITE_ONCE
+  formal_r1: NOT_AUTHORIZED
+  authorization_scope: FORMAL_R1_ONCE
+  prior_authorization_reuse: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  automatic_fix: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  gate0_rerun: FORBIDDEN
+  training: FORBIDDEN

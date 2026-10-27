@@ -1,0 +1,55 @@
+schema_version: 1
+config_id: rps_med_ddr_model_transfer_v0.1
+preregistration: metadata/preregistration/rps_med_ddr_model_transfer_v0.1.yaml
+development_config: configs/experiment/rps_med_tjdr_model_v0.1.yaml
+status: FROZEN_AWAITING_PASSPORT
+
+model:
+  selected: rps_multitask_pair
+  seeds: [20260826, 20260827, 20260828]
+  retraining: FORBIDDEN
+  model_or_seed_reselection: FORBIDDEN
+
+transfer_source:
+  dataset: DDR
+  split: lesion_official_valid
+  expected_unique_images: 149
+  expected_unordered_pairs: 11026
+  image_size: 768
+  fov_algorithm: DDR_FOV_V07
+  prior_exposure: MODEL_FREE_RELATION_ANALYSIS_ONLY
+  patient_eye_independence_claim: FORBIDDEN_IDENTIFIER_NOT_AVAILABLE
+
+comparator:
+  name: SCALE_SPECIFIC_TJDR_DEVELOPMENT_TRAIN_MAJORITY
+  ddr_labels_used_to_define_comparator: false
+
+primary:
+  metric: MULTISCALE_MACRO_F1_GAIN_SELECTED_MINUS_COMPARATOR
+  bootstrap_unit: UNIQUE_DDR_IMAGE
+  bootstrap_pair_reconstruction: ALL_UNORDERED_PAIRS_OF_BOOTSTRAP_POSITIONS
+  replicates: 5000
+  seed: 20260831
+  interval: PERCENTILE_95_TWO_SIDED
+  transfer_pass: LOWER_BOUND_STRICTLY_ABOVE_ZERO
+
+secondary:
+  - RELATION_ACCURACY
+  - PHASE_TOTAL_VARIATION
+  - TRANSITION_ROC_AUC
+  - CRITICAL_LOG2_MAE_TRUE_TRANSITION_PAIRS
+  - PER_SEED_MULTISCALE_MACRO_F1
+
+execution:
+  count: 1
+  authorization_scope: RPS_MED_DDR_MODEL_TRANSFER_ONCE
+  output_overwrite: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+  model_training: FORBIDDEN
+  paper_writing: NOT_STARTED
+
+privacy:
+  image_cache_persisted: false
+  row_predictions_persisted: false
+  source_identifiers_recorded: false

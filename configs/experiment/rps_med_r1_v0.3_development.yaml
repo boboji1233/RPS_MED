@@ -1,0 +1,80 @@
+schema_version: 1
+config_id: rps_med_r1_v0.3_development
+status: DEVELOPMENT_ONLY_WRITE_ONCE_NOT_FORMAL_R1
+project: RPS-Med
+development_boundary:
+  maples_parent_scope: OFFICIAL_TRAIN
+  maples_parent_count: 138
+  maples_partition_method: SORT_STABLE_OPAQUE_INSTANCE_ID
+  maples_development_count: 96
+  maples_confirmation_count: 42
+  ddr_development_scope: LESION_OFFICIAL_TRAIN
+  ddr_development_count: 383
+  ddr_confirmation_scope: LESION_OFFICIAL_VALID
+  ddr_confirmation_count: 149
+input_identity:
+  maples_main_archive: 88351ef4942f4772043df9ba794cb2e5c64bdf2410208a6044f2347d42496c68
+  maples_additional_archive: d618371acad153e97032a6b6c8a4aa758728cada5f9e4a142269aafb7e471e49
+  ddr_private_manifest: 06aecb097d75d14508196b312422a4365825c5185a62d32b02b26653d55439f4
+reference_thresholds:
+  source: configs/experiment/gate0_dr_v0.6.yaml
+  delta: {ma: 2.13210791, hem: 7.33005532, ex: 7.72235597, cws: 8.15592432}
+  epsilon: {ma: 0.50085046, hem: 0.74138916, ex: 0.19392044, cws: 0.48575989}
+  max_width: {ma: 0.0, hem: 0.0, ex: 0.0, cws: 0.0}
+  numeric_tolerance: 1.0e-12
+primary_scale_family:
+  policy: MARGIN_ONLY
+  fine_log2_start: -2.0
+  fine_log2_stop: 2.0
+  fine_log2_step: 0.125
+  fine_scales:
+    - 0.25
+    - 0.2726269331663144
+    - 0.29730177875068026
+    - 0.3242098886627524
+    - 0.3535533905932738
+    - 0.3855527063519852
+    - 0.42044820762685725
+    - 0.4585020216023356
+    - 0.5
+    - 0.5452538663326288
+    - 0.5946035575013605
+    - 0.6484197773255048
+    - 0.7071067811865476
+    - 0.7711054127039704
+    - 0.8408964152537145
+    - 0.9170040432046712
+    - 1.0
+    - 1.0905077326652577
+    - 1.189207115002721
+    - 1.2968395546510096
+    - 1.4142135623730951
+    - 1.5422108254079407
+    - 1.681792830507429
+    - 1.8340080864093424
+    - 2.0
+    - 2.1810154653305154
+    - 2.378414230005442
+    - 2.5936791093020193
+    - 2.8284271247461903
+    - 3.0844216508158815
+    - 3.363585661014858
+    - 3.668016172818685
+    - 4.0
+  coarse_stride: 2
+  coarse_point_count: 17
+endpoints:
+  relation_phase_diagram: ALL_FIVE_RELATIONS_PER_SOURCE
+  persistence_mass: NORMALIZED_TRAPEZOID_OVER_LOG2_SCALE
+  analytic_critical_tolerance: BELOW_AT_ABOVE_MARGIN_BOUNDARIES
+  grid_stability: ABSOLUTE_17_VS_33_PERSISTENCE_MASS_GAP
+  cross_source_stability: ONE_MINUS_NORMALIZED_LOG2_INTEGRATED_TOTAL_VARIATION
+execution_guards:
+  held_out_or_test_scientific_access: FORBIDDEN
+  source_pooling: FORBIDDEN
+  pair_rows_persisted: FORBIDDEN
+  output_overwrite: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  formal_r1: NOT_PERMITTED
+  gate0_rerun: FORBIDDEN
+  model_training: FORBIDDEN

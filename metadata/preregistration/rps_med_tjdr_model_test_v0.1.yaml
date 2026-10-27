@@ -1,0 +1,63 @@
+schema_version: 1
+preregistration_id: rps_med_tjdr_model_test_v0.1
+date: 2026-08-26
+project: RPS-Med
+status: FROZEN_AWAITING_PASSPORT_AND_AUTHORIZATION
+
+hypothesis: >-
+  The development-selected, three-seed RPS multitask pair ensemble improves
+  official-test multiscale macro-F1 over the frozen scale-specific training
+  majority baseline with a positive paired unique-image bootstrap lower bound.
+
+development_lock:
+  result: PASS
+  selected_model: rps_multitask_pair
+  selection_metric: MULTISCALE_MACRO_F1
+  model_or_seed_reselection: FORBIDDEN
+  weight_retraining: FORBIDDEN
+
+test_boundary:
+  source: TJDR_OFFICIAL_TEST_113
+  modeling_unit: UNIQUE_IMAGE_CONTENT
+  pair_count: 6328
+  patient_level_interpretation: FORBIDDEN
+  natural_prevalence_interpretation: FORBIDDEN
+
+ensemble:
+  seeds: [20260826, 20260827, 20260828]
+  spectrum: MEAN_PROBABILITY
+  transition: MEAN_PROBABILITY
+  critical_log2: MEAN_DESTANDARDIZED_VALUE
+
+primary_endpoint:
+  selected_metric: MULTISCALE_MACRO_F1
+  comparator: SCALE_SPECIFIC_TRAIN_MAJORITY
+  contrast: SELECTED_MINUS_COMPARATOR
+  bootstrap_unit: UNIQUE_TEST_IMAGE
+  pair_reconstruction: ALL_UNORDERED_PAIRS_OF_BOOTSTRAP_POSITIONS
+  replicates: 5000
+  seed: 20260829
+  confidence_interval: PERCENTILE_95
+  pass_rule: LOWER_BOUND_STRICTLY_ABOVE_ZERO
+
+secondary_endpoints:
+  confirmatory_status: DESCRIPTIVE_NOT_GATE_DETERMINING
+  metrics:
+    - RELATION_ACCURACY
+    - PHASE_TOTAL_VARIATION
+    - TRANSITION_ROC_AUC
+    - CRITICAL_LOG2_MAE_TRUE_TRANSITION_PAIRS
+    - PER_SEED_MULTISCALE_MACRO_F1
+
+decision:
+  PASS: PRIMARY_PASS_RULE_TRUE
+  NO_GO: PRIMARY_PASS_RULE_FALSE
+  technical_abort: ANY_IDENTITY_AUTHORIZATION_DECODE_MODEL_OR_STATISTICS_FAILURE
+  automatic_retry_after_test_access: FORBIDDEN
+  result_feedback_tuning: FORBIDDEN
+
+privacy:
+  test_cache_persisted: false
+  row_predictions_persisted: false
+  source_identifiers_recorded: false
+  tracked_output: AGGREGATE_ONLY

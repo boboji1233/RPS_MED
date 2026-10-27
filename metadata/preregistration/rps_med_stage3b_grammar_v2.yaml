@@ -1,0 +1,55 @@
+schema_version: 2
+preregistration_id: rps_med_stage3b_grammar_v2
+date_frozen: 2026-08-26
+project: RPS-Med
+status: FROZEN_AFTER_V1_TECHNICAL_ABORT_BEFORE_ANY_STAGE3B_TRAINING
+supersedes: rps_med_stage3b_grammar_v1
+scientific_question: >-
+  Whether an explicit 101-path finite-state grammar removes invalid and
+  multi-transition tolerance spectra while preserving development-only
+  balanced five-state fidelity.
+evidence_role: DEVELOPMENT_ONLY_SUPPORTIVE_EVIDENCE
+normative_config: configs/stage3b/rps_med_stage3b_grammar_v2.yaml
+method_roster: [G0, G1, G3, G4]
+removed_method:
+  id: G2
+  reason: EXACT_FIXED_LOGIT_REPLAY_UNAVAILABLE
+  result_accepted: false
+primary_outcomes:
+  - INVALID_SPECTRUM_RATE
+  - MULTI_TRANSITION_RATE
+  - SEVENTEEN_SCALE_EQUALLY_WEIGHTED_MEAN_MACRO_F1
+comparison_reference: IMMUTABLE_STAGE3A_FULL_B6_PREDICTIONS
+statistics:
+  unit: VALIDATION_UNIQUE_CONTENT_NODE
+  method: PAIRED_DELETE_ONE_NODE_JACKKNIFE
+  pair_row_bootstrap: FORBIDDEN
+  multiplicity: HOLM_WITHIN_EACH_METRIC_FAMILY
+interpretation:
+  fidelity_preserving: >-
+    EVERY_SEED_VALIDITY_RATES_EQUAL_ZERO AND MEAN_MACRO_F1_DELTA_VERSUS_G0_AT_LEAST_MINUS_0_010
+  validity_only: >-
+    EVERY_SEED_VALIDITY_RATES_EQUAL_ZERO AND MEAN_MACRO_F1_DELTA_VERSUS_G0_BELOW_MINUS_0_010
+  invalid_implementation: ANY_VALIDITY_RATE_ABOVE_ZERO
+  clinical_noninferiority_claim: FORBIDDEN
+boundaries:
+  official_test_access: FORBIDDEN
+  ddr_access: FORBIDDEN
+  historical_result_reinterpretation: FORBIDDEN
+  formal_model_reselection: FORBIDDEN
+  patient_level_claim: FORBIDDEN
+  training_scope: FIXED_ENCODER_HEAD_ONLY_FOR_G3_AND_G4
+  result_driven_change: FORBIDDEN
+  selective_seed_retry: FORBIDDEN
+  automatic_retry: FORBIDDEN
+  raw_data_or_checkpoint_commit: FORBIDDEN
+  remote_push: FORBIDDEN
+resource_contract:
+  isolated_environment: D:/boshi/am/.conda/rps-med-stage3b
+  maximum_process_cuda_bytes: 3000000000
+  other_gpu_process_termination: FORBIDDEN
+material_passport:
+  observation: V1_ABORTED_BEFORE_TRAINING_DUE_TO_SPARSE_LOGIT_REPLAY_ARGMAX_MISMATCH
+  source_supported_semantics: SAVED_HARD_PREDICTIONS_REMAIN_G0
+  inference: REPLAYED_LOGITS_ARE_NOT_AN_EXACT_PROXY_FOR_UNSAVED_ORIGINAL_LOGITS
+  unresolved: ORIGINAL_STAGE3A_LOGITS_UNAVAILABLE
